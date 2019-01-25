@@ -1,0 +1,24 @@
+{
+  "name": "helloworld",
+  "description": "a simple helloworld example assembly with a single component that says helloworld",
+  "version": "0.1",
+  "author": "daren-thomas",
+  "id": "e2ae062a-b547-40ac-8b1a-9447f8d866b2",
+  "components": [
+    {
+      "name": "Hello, world!",
+      "abbreviation": "hw",
+      "description": "say hello, world :)",
+      "category": "Hello World Category",
+      "subcategory": "Hello World Sub-Category",
+      "main-module": "helloworld",
+      "include-files": [],
+      "inputs": [
+
+      ],
+      "outputs": [
+
+      ]
+    }
+  ]
+}
