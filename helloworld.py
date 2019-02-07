@@ -62,8 +62,8 @@ class MyComponent(component):
         __version__ = "2018.11.23"
 
         import rhinoscriptsyntax as rs
-
-        a = x + y
+        import inspect
+        a = inspect.getfile(self.__class__)
 
         # return outputs if you have them; here I try it for you:
         return a

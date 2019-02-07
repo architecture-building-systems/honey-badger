@@ -25,6 +25,8 @@ import argparse
 
 
 def main():
+    # temporary create the helloworld dll adding the honey-badger.json to it
+    clr.CompileModules('helloworld.p2.7.5.0.ghpy', 'helloworld.py')
     print('hello, world')
 
 if __name__ == '__main__':
