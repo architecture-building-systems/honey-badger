@@ -19,13 +19,31 @@ honey-badger build [-e] [-i] [-f BADGERFILE]
 """
 
 import sys
+import os
 import clr
+import json
 import argparse
+import string
 
 
 def main(badger_file, editable, install):
     # temporary create the helloworld dll adding the honey-badger.json to it
-    clr.CompileModules('helloworld.p2.7.5.0.ghpy', 'helloworld.py')
+    with open(badger_file, 'r') as bf:
+        badger_config = json.load(bf)
+
+    badger_dir = os.path.abspath(os.path.dirname(badger_file))
+    build_dir = os.path.join(badger_dir, '_build')
+    if not os.path.exists(build_dir):
+        os.makedirs(build_dir)
+
+    with open(os.path.join(os.path.dirname(__file__), 'template.pyt'), 'r') as template:
+        s = string.Template(template.read())
+    with open(os.path.join(build_dir, '__honey_badger_main__.py'), 'w') as hb_main:
+        hb_main.write(s.substitute(badger_config=badger_config))
+
+    clr.CompileModules(os.path.join(build_dir, '{}.ghpy'.format(badger_config['name'])),
+                       os.path.join(build_dir, '__honey_badger_main__.py'),
+                       *[os.path.join(badger_dir, f) for f in badger_config['include-files']])
     print('done.')
 
 
