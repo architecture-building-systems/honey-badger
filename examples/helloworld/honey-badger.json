@@ -14,11 +14,10 @@
       "main-module": "helloworld",
       "include-files": [],
       "inputs": [
-
       ],
-      "outputs": [
-
-      ]
+      "outputs": {
+        "output": "string"
+      }
     }
   ]
 }
