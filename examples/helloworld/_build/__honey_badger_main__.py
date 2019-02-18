@@ -72,6 +72,7 @@ for component in BADGER_CONFIG['components']:
         'RegisterInputParams': RegisterInputParams,
         'RegisterOutputParams': RegisterOutputParams,
         'get_Internal_Icon_24x24': get_Internal_Icon_24x24,
+        'SolveInstance': SolveInstance,
         'RunScript': RunScript,
     })
 
