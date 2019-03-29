@@ -16,10 +16,21 @@
       "id": "d2fd6e31-1482-4db1-b002-1c7acf291979",
       "main-module": "helloworld",
       "inputs": [
+        {
+          "name": "firstname",
+          "nick-name": "nickname",
+          "type": "string",
+          "description": "a name to say hello world to"
+        }
       ],
-      "outputs": {
-        "output": "string"
-      }
+      "outputs": [
+        {
+          "name": "output",
+          "nick-name": "o",
+          "type": "string",
+          "description": "output of the script"
+        }
+      ]
     }
   ]
 }
