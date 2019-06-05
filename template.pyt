@@ -16,6 +16,7 @@ BADGER_CONFIG = ${badger_config}
 
 PARAMETER_MAP = {
     'string': Grasshopper.Kernel.Parameters.Param_GenericObject,
+    'float': Grasshopper.Kernel.Parameters.Param_Number,
     'number': Grasshopper.Kernel.Parameters.Param_Number,
 }
 
@@ -57,8 +58,12 @@ for component in BADGER_CONFIG['components']:
 
     def SolveInstance(self, DA):
         main_module = importlib.import_module(component['main-module'])
+        if 'main-function' in component:
+            main_function = getattr(main_module, component['main-function'])
+        else:
+            main_function = getattr(main_module, 'main')
         inputs = [self.marshal.GetInput(DA, i) for i in range(len(component['inputs']))]
-        results = main_module.main(*inputs)
+        results = main_function(*inputs)
         if len(component['outputs']) == 1:
             self.marshal.SetOutput(results, DA, 0, True)
         elif len(component['outputs']) > 1:
