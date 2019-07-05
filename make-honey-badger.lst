@@ -1,0 +1,33 @@
+# responsefile for ipyc.exe
+# use this to include all the python27 stdlib stuff
+# this assumes IronPython is installed to "C:\Program Files\IronPython 2.7"
+C:\Program Files\IronPython 2.7\Lib\os.py
+C:\Program Files\IronPython 2.7\Lib\ntpath.py
+C:\Program Files\IronPython 2.7\Lib\stat.py
+C:\Program Files\IronPython 2.7\Lib\genericpath.py
+C:\Program Files\IronPython 2.7\Lib\warnings.py
+C:\Program Files\IronPython 2.7\Lib\linecache.py
+C:\Program Files\IronPython 2.7\Lib\types.py
+C:\Program Files\IronPython 2.7\Lib\UserDict.py
+C:\Program Files\IronPython 2.7\Lib\_abcoll.py
+C:\Program Files\IronPython 2.7\Lib\abc.py
+C:\Program Files\IronPython 2.7\Lib\_weakrefset.py
+C:\Program Files\IronPython 2.7\Lib\json\__init__.py
+C:\Program Files\IronPython 2.7\Lib\json\decoder.py
+C:\Program Files\IronPython 2.7\Lib\json\encoder.py
+C:\Program Files\IronPython 2.7\Lib\json\scanner.py
+C:\Program Files\IronPython 2.7\Lib\struct.py
+C:\Program Files\IronPython 2.7\Lib\argparse.py
+C:\Program Files\IronPython 2.7\Lib\collections.py
+C:\Program Files\IronPython 2.7\Lib\keyword.py
+C:\Program Files\IronPython 2.7\Lib\heapq.py
+C:\Program Files\IronPython 2.7\Lib\copy.py
+C:\Program Files\IronPython 2.7\Lib\weakref.py
+C:\Program Files\IronPython 2.7\Lib\textwrap.py
+C:\Program Files\IronPython 2.7\Lib\string.py
+C:\Program Files\IronPython 2.7\Lib\gettext.py
+C:\Program Files\IronPython 2.7\Lib\locale.py
+C:\Program Files\IronPython 2.7\Lib\encodings\__init__.py
+C:\Program Files\IronPython 2.7\Lib\encodings\aliases.py
+C:\Program Files\IronPython 2.7\Lib\codecs.py
+C:\Program Files\IronPython 2.7\Lib\functools.py

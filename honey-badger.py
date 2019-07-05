@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 """
 honey-badger - a build system for Rhino/Grasshopper components written in Python.
 
