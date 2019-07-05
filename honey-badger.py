@@ -23,37 +23,92 @@ import json
 import argparse
 import string
 import shutil
+import traceback
 
 
 def main(badger_file, editable, install):
-    # temporary create the helloworld dll adding the honey-badger.json to it
-    with open(badger_file, 'r') as bf:
-        badger_config = json.load(bf)
+    try:
+        # temporary create the helloworld dll adding the honey-badger.json to it
+        with open(badger_file, mode='r') as bf:
+            badger_file_contents = bf.read().decode('utf-8')
+            badger_config = json.loads(badger_file_contents)
 
-    badger_dir = os.path.abspath(os.path.dirname(badger_file))
-    build_dir = os.path.join(badger_dir, '_build')
-    if not os.path.exists(build_dir):
-        os.makedirs(build_dir)
+        badger_config = check_badger_config(badger_config)
 
-    template = string.Template(TEMPLATE)
-    with open(os.path.join(build_dir, '__honey_badger_main__.py'), 'w') as hb_main:
-        hb_main.write(template.substitute(badger_config=badger_config))
+        badger_dir = os.path.abspath(os.path.dirname(badger_file))
+        build_dir = os.path.join(badger_dir, '_build')
+        if not os.path.exists(build_dir):
+            os.makedirs(build_dir)
 
-    ghpy_path = os.path.join(build_dir, '{}.ghpy'.format(badger_config['name']))
-    clr.CompileModules(ghpy_path,
-                       os.path.join(build_dir, '__honey_badger_main__.py'),
-                       *[os.path.join(badger_dir, f) for f in badger_config['include-files']])
+        template = string.Template(TEMPLATE)
+        hb_main_py = 'honey_badger_{guid}.py'.format(guid=badger_config["id"].replace('-', '_'))
+        with open(os.path.join(build_dir, hb_main_py), 'w') as hb_main:
+            json_badger_config = json.dumps(badger_config, indent=4)
+            assert not "'''" in json_badger_config, "Tripple single quotes not allowed in badger-file!"
+            hb_main.write(template.substitute(badger_config=json_badger_config))
 
-    if install:
-        destination = os.path.join(os.path.expandvars("${APPDATA}"), "Grasshopper", "Libraries")
-        print('installing {ghpy_name} to {destination}'.format(
-            ghpy_name=os.path.basename(ghpy_path), destination=destination))
-        shutil.copy(ghpy_path, destination)
-    print('done.')
+        ghpy_path = os.path.join(build_dir, '{}.ghpy'.format(badger_config['name']))
+        clr.CompileModules(ghpy_path,
+                           os.path.join(build_dir, hb_main_py),
+                           *[os.path.join(badger_dir, f) for f in badger_config['include-files']])
+
+        if install:
+            destination = os.path.join(os.path.expandvars("${APPDATA}"), "Grasshopper", "Libraries")
+            print('installing {ghpy_name} to {destination}'.format(
+                ghpy_name=os.path.basename(ghpy_path), destination=destination))
+            shutil.copy(ghpy_path, destination)
+        print('done.')
+    except:
+        print traceback.print_exc()
+
+
+def check_badger_config(badger_config):
+    """
+    Make sure the badger file contains all the required info. Fill in default values if they don't exist yet.
+
+    nick-names and defaults for inputs/outputs are added automatically.
+
+    FIXME: this could also be done with some kind of json schema thing. For now, this provides enough info.
+    """
+    assert "name" in badger_config, "Badger file needs a name"
+    assert "description" in badger_config, "Badger file needs a description"
+    assert "version" in badger_config, "Badger file needs a version"
+    assert "author" in badger_config, "Badger file needs an author"
+    assert "id" in badger_config, "Badger file needs an id"
+    assert "include-files" in badger_config, "Badger file needs to specify include-files"
+    assert "components" in badger_config, "Badger file needs to specify at least one component"
+    for component in badger_config["components"]:
+        assert "class-name" in component, "Component needs a class name"
+        assert "name" in component, "Component needs a name"
+        assert "abbreviation" in component, "Component needs an abbreviation"
+        assert "description" in component, "Component needs a description"
+        assert "category" in component, "Component needs a category"
+        assert "subcategory" in component, "Component needs a subcategory"
+        assert "id" in component, "Component needs an id"
+        assert "main-module" in component, "Component needs a main-module"
+        assert "main-function" in component, "Component needs a main-function"
+        assert "main-function" in component, "Component needs a main-function"
+        assert "inputs" in component, "Component needs inputs"
+        assert "outputs" in component, "Component needs outputs"
+        for input in component["inputs"]:
+            assert "type" in input, "Input needs a type"
+            assert "name" in input, "Input needs a name"
+            assert "description" in input, "Input needs a description"
+            if not "nick-name" in input:
+                input["nick-name"] = input["name"]
+            if not "default" in input:
+                input["default"] = None
+        for output in component["outputs"]:
+            assert "type" in output, "Input needs a type"
+            assert "name" in output, "Input needs a name"
+            assert "description" in output, "Input needs a description"
+            if not "nick-name" in output:
+                output["nick-name"] = output["name"]
+    return badger_config
 
 
 # This is the code that get's used to create the classes required for GrassHopper Components / Assemblies
-TEMPLATE = """
+TEMPLATE = u"""
 from ghpythonlib.componentbase import dotnetcompiledcomponent
 import Grasshopper, GhPython
 import System
@@ -62,8 +117,9 @@ import System
 import Rhino
 import rhinoscriptsyntax as rs
 import importlib
+import json
 
-BADGER_CONFIG = ${badger_config}
+BADGER_CONFIG = json.loads('''${badger_config}''')
 
 PARAMETER_MAP = {
     'string': Grasshopper.Kernel.Parameters.Param_GenericObject,
@@ -71,11 +127,13 @@ PARAMETER_MAP = {
     'number': Grasshopper.Kernel.Parameters.Param_Number,
 }
 
+
 def set_up_param(p, name, nickname, description):
     p.Name = name
     p.NickName = nickname
     p.Description = description
     p.Optional = True
+
 
 for component in BADGER_CONFIG['components']:
     # dynamically create subclasses of ``component`` for each component in the badger file
