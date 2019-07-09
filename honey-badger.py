@@ -47,9 +47,14 @@ def main(badger_file, editable, install):
             assert not "'''" in json_badger_config, "Tripple single quotes not allowed in badger-file!"
             hb_main.write(template.substitute(badger_config=json_badger_config))
 
+        # copy hblib.py to build dir
+        shutil.copy(os.path.join(os.path.dirname(__file__), 'hblib.py'),
+                    os.path.join(build_dir, 'hblib.py'))
+
         ghpy_path = os.path.join(build_dir, '{}.ghpy'.format(badger_config['name']))
         clr.CompileModules(ghpy_path,
                            os.path.join(build_dir, hb_main_py),
+                           os.path.join(build_dir, 'hblib.py'),
                            *[os.path.join(badger_dir, f) for f in badger_config['include-files']])
 
         if install:
