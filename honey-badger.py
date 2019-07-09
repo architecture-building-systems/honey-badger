@@ -86,8 +86,6 @@ def check_badger_config(badger_config):
         assert "subcategory" in component, "Component needs a subcategory"
         assert "id" in component, "Component needs an id"
         assert "main-module" in component, "Component needs a main-module"
-        assert "main-function" in component, "Component needs a main-function"
-        assert "main-function" in component, "Component needs a main-function"
         assert "inputs" in component, "Component needs inputs"
         assert "outputs" in component, "Component needs outputs"
         for input in component["inputs"]:
@@ -172,6 +170,8 @@ for component in BADGER_CONFIG['components']:
         else:
             main_function = getattr(main_module, 'main')
         inputs = [self.marshal.GetInput(DA, i) for i in range(len(component['inputs']))]
+        # apply default values
+        
         results = main_function(*inputs)
         if len(component['outputs']) == 1:
             self.marshal.SetOutput(results, DA, 0, True)
