@@ -2,15 +2,10 @@
 hblib - library functions for honey-badger components.
 """
 from GhPython.Assemblies import DotNetCompiledComponent
+from Grasshopper.Kernel import GH_ParamAccess
 import Grasshopper
 import System
 import importlib
-
-PARAMETER_MAP = {
-    'string': Grasshopper.Kernel.Parameters.Param_GenericObject,
-    'float': Grasshopper.Kernel.Parameters.Param_Number,
-    'number': Grasshopper.Kernel.Parameters.Param_Number,
-}
 
 
 def set_up_param(p, name, nickname, description):
@@ -18,6 +13,16 @@ def set_up_param(p, name, nickname, description):
     p.NickName = nickname
     p.Description = description
     p.Optional = True
+
+
+# Maps badger-file parameter names to the Parameter type to use
+PARAMETER_MAP = {
+    'string': Grasshopper.Kernel.Parameters.Param_GenericObject,
+    'float': Grasshopper.Kernel.Parameters.Param_Number,
+    'number': Grasshopper.Kernel.Parameters.Param_Number,
+    'integer': Grasshopper.Kernel.Parameters.Param_Integer,
+    'boolean': Grasshopper.Kernel.Parameters.Param_Boolean,
+}
 
 
 # FIXME: remove this once done debugging
@@ -49,14 +54,14 @@ def get_base_class(component):
         def get_ComponentGuid(self):
             return System.Guid(component["id"])
 
-        def RegisterInputParams(self, pManager):
+        def RegisterInputParams(self, _):
             for input in component['inputs']:
                 p = PARAMETER_MAP[input['type']]()
                 set_up_param(p, input['name'], input['nick-name'], input['description'])
                 p.Access = Grasshopper.Kernel.GH_ParamAccess.item
                 self.Params.Input.Add(p)
 
-        def RegisterOutputParams(self, pManager):
+        def RegisterOutputParams(self, _):
             for output in component['outputs']:
                 p = PARAMETER_MAP[output['type']]()
                 set_up_param(p, output['name'], output['nick-name'], output['description'])
@@ -75,6 +80,9 @@ def get_base_class(component):
                 main_function = getattr(main_module, 'main')
             inputs = [self.marshal.GetInput(DA, i) for i in range(len(component['inputs']))]
             # apply default values
+            for i, input in enumerate(inputs):
+                if input is None and "default" in component["inputs"][i]:
+                    inputs[i] = component["inputs"][i]["default"]
 
             results = main_function(*inputs)
             if len(component['outputs']) == 1:

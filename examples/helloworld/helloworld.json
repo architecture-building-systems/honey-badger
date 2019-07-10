@@ -20,7 +20,8 @@
           "name": "firstname",
           "nick-name": "nickname",
           "type": "string",
-          "description": "a name to say hello world to"
+          "description": "a name to say hello world to",
+          "default": "Randall"
         }
       ],
       "outputs": [

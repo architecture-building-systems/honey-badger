@@ -16,7 +16,7 @@ BADGER_CONFIG = json.loads('''{
                 {
                     "description": "a name to say hello world to", 
                     "nick-name": "nickname", 
-                    "default": null, 
+                    "default": "Randall", 
                     "name": "firstname", 
                     "type": "string"
                 }
