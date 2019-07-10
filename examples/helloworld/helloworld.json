@@ -1,0 +1,37 @@
+{
+  "name": "helloworld",
+  "description": "a simple helloworld example assembly with a single component that says helloworld",
+  "version": "0.1",
+  "author": "daren-thomas",
+  "id": "e2ae062a-b547-40ac-8b1a-9447f8d866b2",
+  "include-files": ["helloworld.py"],
+  "components": [
+    {
+      "class-name": "HelloWorldComponent",
+      "name": "HelloWorldName",
+      "abbreviation": "hw",
+      "description": "say hello, world :)",
+      "category": "Hello World Category",
+      "subcategory": "Hello World Sub-Category",
+      "id": "d2fd6e31-1482-4db1-b002-1c7acf291979",
+      "main-module": "helloworld",
+      "inputs": [
+        {
+          "name": "firstname",
+          "nick-name": "nickname",
+          "type": "string",
+          "description": "a name to say hello world to",
+          "default": "Randall"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "nick-name": "o",
+          "type": "string",
+          "description": "output of the script"
+        }
+      ]
+    }
+  ]
+}
