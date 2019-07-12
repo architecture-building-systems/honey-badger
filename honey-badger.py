@@ -26,6 +26,22 @@ import shutil
 import traceback
 
 
+def honey_badger_installation_folder():
+    """Return the folder where honey-badger is installed / cloned to - we need this to find hblib.py
+    The tricky bit is that when compiled to honey-badger.exe, the path to `__file__` is always the current
+    directory.
+    """
+    clr.AddReference("System.Reflection")
+    import System.Reflection
+    entry_assembly_location = System.Reflection.Assembly.GetEntryAssembly().Location
+    if entry_assembly_location.endswith("honey-badger.exe"):
+        # compiled version, we're our own entry-assembly
+        return os.path.dirname(os.path.normpath(os.path.abspath(entry_assembly_location)))
+    else:
+        # script version, __file__ actually refers to the proper location
+        return os.path.dirname(os.path.normpath(os.path.abspath(__file__)))
+
+
 def main(badger_file, editable, install):
     try:
         # temporary create the helloworld dll adding the honey-badger.json to it
@@ -48,13 +64,16 @@ def main(badger_file, editable, install):
             hb_main.write(template.substitute(badger_config=json_badger_config))
 
         # copy hblib.py to build dir
-        shutil.copy(os.path.join(os.path.dirname(__file__), 'hblib.py'),
-                    os.path.join(build_dir, 'hblib.py'))
+        src_hblib_py = os.path.join(honey_badger_installation_folder(), 'hblib.py')
+        dst_hblib_py = os.path.join(build_dir, 'hblib.py')
+        # print("Copying hblib.py from {src} to {dst}".format(src=src_hblib_py, dst=dst_hblib_py))
+        shutil.copy(src_hblib_py, dst_hblib_py)
 
+        # compile to .ghpy file
         ghpy_path = os.path.join(build_dir, '{}.ghpy'.format(badger_config['name']))
         clr.CompileModules(ghpy_path,
                            os.path.join(build_dir, hb_main_py),
-                           os.path.join(build_dir, 'hblib.py'),
+                           dst_hblib_py,
                            *[os.path.join(badger_dir, f) for f in badger_config['include-files']])
 
         if install:
