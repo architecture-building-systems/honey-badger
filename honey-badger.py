@@ -30,7 +30,7 @@ def main(badger_file, editable, install):
     try:
         # temporary create the helloworld dll adding the honey-badger.json to it
         with open(badger_file, mode='r') as bf:
-            badger_file_contents = bf.read().decode('utf-8')
+            badger_file_contents = bf.read()
             badger_config = json.loads(badger_file_contents)
 
         badger_config = check_badger_config(badger_config)
