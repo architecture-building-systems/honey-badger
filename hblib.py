@@ -25,13 +25,6 @@ PARAMETER_MAP = {
 }
 
 
-# FIXME: remove this once done debugging
-def log(msg):
-    with open(r'c:\Users\darthoma\Downloads\HoneyBadgerComponent.log', 'a') as f:
-        f.write(msg)
-        f.write('\n')
-
-
 def get_base_class(component):
     """
     Returns a base class to derive from based on the contents of the component dictionary (see badger file)
@@ -40,9 +33,6 @@ def get_base_class(component):
     """
     class HoneyBadgerComponent(DotNetCompiledComponent):
         def __new__(cls, *args, **kwargs):
-            log("HoneyBadgerComponent.__new__({cls}, {args}, {kwargs})".format(
-                cls=cls, args=args, kwargs=kwargs
-            ))
             if not len(args) == 5:
                 args = ('', '', '', '', '')
             return DotNetCompiledComponent.__new__(cls, component['name'],
