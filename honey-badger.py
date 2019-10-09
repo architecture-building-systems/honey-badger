@@ -4,7 +4,7 @@ honey-badger - a build system for Rhino/Grasshopper components written in Python
 USAGE:
 ------
 
-honey-badger build [-e] [-i] [-f BADGERFILE] 
+honey-badger [-e] [-i] [-f BADGERFILE]
 
     reads in the BADGERFILE (defaults to "honey-badger.json" in the current directory) and
     compiles it into a single *.ghpy file containing the classes necessary.
@@ -13,7 +13,7 @@ honey-badger build [-e] [-i] [-f BADGERFILE]
     component will source it on each run from disk (using reload()). Use this only for developer purposes as the
     path to the scripts are hard-coded into the *.ghpy file.
 
-    The -i switch installes the honey-badger kit after building to the user's Grasshopper Library folder.
+    The -i switch installs the honey-badger kit after building to the user's Grasshopper Library folder.
 """
 
 import sys
