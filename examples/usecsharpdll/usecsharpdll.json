@@ -1,0 +1,42 @@
+{
+  "name": "usecsharpdll",
+  "description": "an example on how to import a c# dll and use its functions",
+  "version": "0.1",
+  "author": "christophwaibel",
+  "id": "e2ae062a-b547-40ac-8b1a-9447f8d866b3",
+  "include-files": ["usecsharpdll.py"],
+  "components": [
+    {
+      "class-name": "UseCSharpdll",
+      "name": "UseCSharpdll",
+      "abbreviation": "csharp",
+      "description": "import and use dll",
+      "category": "Hello World Category",
+      "subcategory": "Hello World Sub-Category",
+      "id": "d2fd6e31-1482-4db1-b002-1c7acf291973",
+      "main-module": "usecsharpdll",
+      "inputs": [
+        {
+          "name": "x1",
+          "nick-name": "x1",
+          "type": "float",
+          "description": "x1"
+        },
+        {
+          "name": "x2",
+          "nick-name": "x2",
+          "type": "float",
+          "description": "x2"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "dist2pt",
+          "nick-name": "dist2pt",
+          "type": "float",
+          "description": "dist2pt"
+        }
+      ]
+    }
+  ]
+}
