@@ -27,3 +27,12 @@ parameters, a GH component for each script in the CEA family could be created. h
   - also, it looks like GrassHopper will automatically re-load the assemblies when they're updated!
 - The folder `%programfiles%\Rhino 6\Plug-ins\Grasshopper\Components\` contains the GhPython `.gha` file...
   - ghpythonlib `%appdata%\McNeel\Rhinoceros\6.0\Plug-ins\IronPython (814d908a-e25c-493d-97e9-ee3861957f49)\settings\lib\`
+
+## FAQ
+
+- You can use .Net libraries with the clr libray. This is a simple example [usecsharpdll](/examples/usecsharpdll/usecsharpdll.py) 
+	- Your Python IDE won't recognize that library, meaning it will tell you that no module named `yourlibrary` is found. But you can still use it.
+	- Installing stubs (if any exist for your library) will solve this problem. See next point
+- You can use typehints of .Net libraries by importing stubs: https://stevebaer.wordpress.com/2019/02/25/autocomplete-and-type-hints-with-python-scripts-for-rhino-grasshopper/
+	- Make sure you set your Python interpreter to Python 2.7, otherwise with IronPython it won't let you install the stub files. In PyCharm: File->Settings->Projet:Honey-Badger->Project Interpreter.
+	- Don't forget to install clr package to your Python 2.7 environment
