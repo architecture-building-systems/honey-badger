@@ -5,9 +5,11 @@ calculates distance between two 1D points
 import Grasshopper
 path = Grasshopper.Folders.AppDataFolder
 import clr
-clr.AddReferenceToFileAndPath(path + "Libraries\SolarModel.dll") # need to put that dll into your Grasshopper libraries folder
-import SolarModel # your Python IDE will tell you that this module is missing, even if it isn't. Can be resolved by installing stubs for it, if any exist
-import System # also doesn't see it
+import os
+# need to put that dll into your Grasshopper libraries folder
+clr.AddReferenceToFileAndPath(os.path.join(path, "Libraries", "SolarModel.dll"))
+import SolarModel
+import System
 
 def main(x1, x2):
     x1float = float(x1) # IronPython? wouldn't take it directly from input
