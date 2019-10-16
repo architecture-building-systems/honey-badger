@@ -27,6 +27,12 @@
           "nick-name": "x2",
           "type": "float",
           "description": "x2"
+        },
+        {
+          "name": "x3",
+          "nick-name": "x3",
+          "type": "mesh",
+          "description": "x3"
         }
       ],
       "outputs": [

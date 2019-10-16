@@ -22,6 +22,7 @@ PARAMETER_MAP = {
     'number': Grasshopper.Kernel.Parameters.Param_Number,
     'integer': Grasshopper.Kernel.Parameters.Param_Integer,
     'boolean': Grasshopper.Kernel.Parameters.Param_Boolean,
+    'mesh': Grasshopper.Kernel.Parameters.Param_Mesh,
 }
 
 

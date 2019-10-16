@@ -26,6 +26,13 @@ BADGER_CONFIG = json.loads('''{
                     "default": null, 
                     "name": "x2", 
                     "type": "float"
+                }, 
+                {
+                    "description": "x3", 
+                    "nick-name": "x3", 
+                    "default": null, 
+                    "name": "x3", 
+                    "type": "mesh"
                 }
             ], 
             "description": "import and use dll", 
