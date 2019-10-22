@@ -65,8 +65,8 @@ def main(badger_file, editable, install):
             hb_main.write(template.substitute(badger_config=json_badger_config, guid=guid))
 
         # copy hblib.py to build dir
-        src_hblib_py = os.path.join(honey_badger_installation_folder(), "hblib_{guid}.py".format(guid=guid))
-        dst_hblib_py = os.path.join(build_dir, 'hblib.py')
+        src_hblib_py = os.path.join(honey_badger_installation_folder(), 'hblib.py')
+        dst_hblib_py = os.path.join(build_dir, "hblib_{guid}.py".format(guid=guid))
         # print("Copying hblib.py from {src} to {dst}".format(src=src_hblib_py, dst=dst_hblib_py))
         shutil.copy(src_hblib_py, dst_hblib_py)
 
