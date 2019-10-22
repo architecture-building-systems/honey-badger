@@ -149,7 +149,7 @@ TEMPLATE = u"""
 import json
 import GhPython
 import System
-import hblib_${guid}
+import hblib_${guid} as hblib
 import Grasshopper
 
 BADGER_CONFIG = json.loads('''${badger_config}''')

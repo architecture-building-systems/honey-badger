@@ -42,6 +42,12 @@
           "nick-name": "dist2pt",
           "type": "float",
           "description": "dist2pt"
+        },
+        {
+          "name": "meshout",
+          "nick-name": "meshout",
+          "type": "mesh",
+          "description": "meshout"
         }
       ]
     }
