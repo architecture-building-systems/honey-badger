@@ -6,6 +6,7 @@ import Grasshopper
 path = Grasshopper.Folders.AppDataFolder
 import clr
 import os
+
 # need to put that dll into your Grasshopper libraries folder
 clr.AddReferenceToFileAndPath(os.path.join(path, "Libraries", "SolarModel.dll"))
 import SolarModel
