@@ -5,6 +5,7 @@
   "author": "christophwaibel",
   "id": "e2ae062a-b547-40ac-8b1a-9447f8d866b3",
   "include-files": ["usecsharpdll.py"],
+  "include-install": ["SolarModel.dll"],
   "components": [
     {
       "class-name": "UseCSharpdll",
@@ -27,6 +28,12 @@
           "nick-name": "x2",
           "type": "float",
           "description": "x2"
+        },
+        {
+          "name": "x3",
+          "nick-name": "x3",
+          "type": "mesh",
+          "description": "x3"
         }
       ],
       "outputs": [

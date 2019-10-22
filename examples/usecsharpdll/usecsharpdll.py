@@ -6,12 +6,13 @@ import Grasshopper
 path = Grasshopper.Folders.AppDataFolder
 import clr
 import os
+
 # need to put that dll into your Grasshopper libraries folder
 clr.AddReferenceToFileAndPath(os.path.join(path, "Libraries", "SolarModel.dll"))
 import SolarModel
 import System
 
-def main(x1, x2):
+def main(x1, x2, x3):
     x1float = float(x1) # IronPython? wouldn't take it directly from input
     x2float = float(x2)
 

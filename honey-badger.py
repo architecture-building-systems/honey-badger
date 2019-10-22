@@ -57,15 +57,16 @@ def main(badger_file, editable, install):
             os.makedirs(build_dir)
 
         template = string.Template(TEMPLATE)
-        hb_main_py = 'honey_badger_{guid}.py'.format(guid=badger_config["id"].replace('-', '_'))
+        guid = badger_config["id"].replace('-', '_')
+        hb_main_py = 'honey_badger_{guid}.py'.format(guid=guid)
         with open(os.path.join(build_dir, hb_main_py), 'w') as hb_main:
             json_badger_config = json.dumps(badger_config, indent=4)
             assert not "'''" in json_badger_config, "Tripple single quotes not allowed in badger-file!"
-            hb_main.write(template.substitute(badger_config=json_badger_config))
+            hb_main.write(template.substitute(badger_config=json_badger_config, guid=guid))
 
         # copy hblib.py to build dir
         src_hblib_py = os.path.join(honey_badger_installation_folder(), 'hblib.py')
-        dst_hblib_py = os.path.join(build_dir, 'hblib.py')
+        dst_hblib_py = os.path.join(build_dir, "hblib_{guid}.py".format(guid=guid))
         # print("Copying hblib.py from {src} to {dst}".format(src=src_hblib_py, dst=dst_hblib_py))
         shutil.copy(src_hblib_py, dst_hblib_py)
 
@@ -81,6 +82,18 @@ def main(badger_file, editable, install):
             print('installing {ghpy_name} to {destination}'.format(
                 ghpy_name=os.path.basename(ghpy_path), destination=destination))
             shutil.copy(ghpy_path, destination)
+
+            # copy additional files (from "include-install")
+            for file_name in badger_config["include-install"]:
+                if os.path.isabs(file_name):
+                    file_path = file_name
+                else:
+                    # relative paths are relative to the folder containing the badger-file
+                    file_path = os.path.join(badger_dir, file_name)
+                assert os.path.exists(file_path), "Could not locate file: {}".format(file_path)
+                print("copying {file_path} to {destination}".format(**locals()))
+                shutil.copy(file_path, destination)
+
         print('done.')
     except:
         print traceback.print_exc()
@@ -100,6 +113,8 @@ def check_badger_config(badger_config):
     assert "author" in badger_config, "Badger file needs an author"
     assert "id" in badger_config, "Badger file needs an id"
     assert "include-files" in badger_config, "Badger file needs to specify include-files"
+    if not "include-install" in badger_config:
+        badger_config["include-install"] = []
     assert "components" in badger_config, "Badger file needs to specify at least one component"
     for component in badger_config["components"]:
         assert "class-name" in component, "Component needs a class name"
@@ -134,7 +149,7 @@ TEMPLATE = u"""
 import json
 import GhPython
 import System
-import hblib
+import hblib_${guid}
 import Grasshopper
 
 BADGER_CONFIG = json.loads('''${badger_config}''')
