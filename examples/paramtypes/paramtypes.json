@@ -1,0 +1,457 @@
+{
+  "name": "paramtypes",
+  "description": "an component to test each Grasshopper parameter type",
+  "version": "0.1",
+  "author": "christophwaibel",
+  "id": "67530f84-3745-4daa-baac-b32eb18e17ec",
+  "include-files": ["paramtypes.py"],
+  "components": [
+    {
+      "class-name": "ParamTypes",
+      "name": "ParamTypes",
+      "abbreviation": "params",
+      "description": "testing parameter types",
+      "category": "Hello World Category",
+      "subcategory": "Hello World Sub-Category",
+      "id": "6459b5f1-74c2-41cb-b196-9e36722bdfa7",
+      "main-module": "paramtypes",
+      "inputs": [
+        {
+          "name": "arc",
+          "nick-name": "arc",
+          "type": "arc",
+          "description": "Param_Arc",
+          "Optional": "True"
+        },
+        {
+          "name": "boolean",
+          "nick-name": "boolean",
+          "type": "boolean",
+          "description": "Param_Boolean"
+        },
+        {
+          "name": "box",
+          "nick-name": "box",
+          "type": "box",
+          "description": "Param_Box"
+        },
+        {
+          "name": "brep",
+          "nick-name": "brep",
+          "type": "brep",
+          "description": "Param_Brep"
+        },
+        {
+          "name": "circle",
+          "nick-name": "circle",
+          "type": "circle",
+          "description": "Param_Circle"
+        },
+        {
+          "name": "colour",
+          "nick-name": "colour",
+          "type": "colour",
+          "description": "Param_Colour"
+        },
+        {
+          "name": "complex",
+          "nick-name": "complex",
+          "type": "complex",
+          "description": "Param_Complex"
+        },
+        {
+          "name": "culture",
+          "nick-name": "culture",
+          "type": "culture",
+          "description": "Param_Culture"
+        },
+        {
+          "name": "curve",
+          "nick-name": "curve",
+          "type": "curve",
+          "description": "Param_Curve"
+        },
+        {
+          "name": "field",
+          "nick-name": "field",
+          "description": "Param_Field",
+          "type": "field"
+        },
+        {
+          "name": "filepath",
+          "nick-name": "filepath",
+          "type": "filepath",
+          "description": "Param_FilePath"
+        },
+        {
+          "name": "generic",
+          "nick-name": "generic",
+          "type": "generic",
+          "description": "Param_GenericObject"
+        },
+        {
+          "name": "geometry",
+          "nick-name": "geometry",
+          "type": "geometry",
+          "description": "Param_Geometry"
+        },
+        {
+          "name": "group",
+          "nick-name": "group",
+          "type": "group",
+          "description": "Param_Group"
+        },
+        {
+          "name": "guid",
+          "nick-name": "guid",
+          "type": "guid",
+          "description": "Param_Guid"
+        },
+        {
+          "name": "integer",
+          "nick-name": "integer",
+          "type": "integer",
+          "description": "Param_Integer"
+        },
+        {
+          "name": "interval",
+          "nick-name": "interval",
+          "type": "interval",
+          "description": "Param_Interval"
+        },
+        {
+          "name": "interval2d",
+          "nick-name": "interval2d",
+          "type": "interval2d",
+          "description": "Param_Interval2D"
+        },
+        {
+          "name": "latlonlocation",
+          "nick-name": "latlonlocation",
+          "type": "latlonlocation",
+          "description": "Param_LatLonLocation"
+        },
+        {
+          "name": "line",
+          "nick-name": "line",
+          "type": "line",
+          "description": "Param_Line"
+        },
+        {
+          "name": "matrix",
+          "nick-name": "matrix",
+          "type": "matrix",
+          "description": "Param_Matrix"
+        },
+        {
+          "name": "mesh",
+          "nick-name": "mesh",
+          "type": "mesh",
+          "description": "Param_Mesh"
+        },
+        {
+          "name": "meshface",
+          "nick-name": "mehsface",
+          "type": "meshface",
+          "description": "Param_MeshFace"
+        },
+        {
+          "name": "meshparameters",
+          "nick-name": "meshparameters",
+          "type": "meshparameters",
+          "description": "Param_MeshParameters"
+        },
+        {
+          "name": "float",
+          "nick-name": "float",
+          "type": "float",
+          "description": "Param_Number"
+        },
+        {
+          "name": "oglshader",
+          "nick-name": "oglshader",
+          "type": "oglshader",
+          "description": "Param_OGLShader"
+        },
+        {
+          "name": "plane",
+          "nick-name": "plane",
+          "type": "plane",
+          "description": "Param_Plane"
+        },
+        {
+          "name": "point",
+          "nick-name": "point",
+          "type": "point",
+          "description": "Param_Point"
+        },
+        {
+          "name": "rectangle",
+          "nick-name": "rectangle",
+          "type": "rectangle",
+          "description": "Param_Rectangle"
+        },
+        {
+          "name": "scriptvariable",
+          "nick-name": "scriptvariable",
+          "type": "scriptvariable",
+          "description": "Param_ScriptVariable"
+        },
+        {
+          "name": "string",
+          "nick-name": "string",
+          "type": "string",
+          "description": "Param_String"
+        },
+        {
+          "name": "structurepath",
+          "nick-name": "structurepath",
+          "type": "structurepath",
+          "description": "Param_StructurePath"
+        },
+        {
+          "name": "surface",
+          "nick-name": "surface",
+          "type": "surface",
+          "description": "Param_Surface"
+        },
+        {
+          "name": "time",
+          "nick-name": "time",
+          "type": "time",
+          "description": "Param_Time"
+        },
+        {
+          "name": "transform",
+          "nick-name": "transform",
+          "type": "transform",
+          "description": "Param_Transform"
+        },
+        {
+          "name": "vector",
+          "nick-name": "vector",
+          "type": "vector",
+          "description": "Param_Vector"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "arc",
+          "nick-name": "arc",
+          "type": "arc",
+          "description": "Param_Arc"
+        },
+        {
+          "name": "boolean",
+          "nick-name": "boolean",
+          "type": "boolean",
+          "description": "Param_Boolean"
+        },
+        {
+          "name": "box",
+          "nick-name": "box",
+          "type": "box",
+          "description": "Param_Box"
+        },
+        {
+          "name": "brep",
+          "nick-name": "brep",
+          "type": "brep",
+          "description": "Param_Brep"
+        },
+        {
+          "name": "circle",
+          "nick-name": "circle",
+          "type": "circle",
+          "description": "Param_Circle"
+        },
+        {
+          "name": "colour",
+          "nick-name": "colour",
+          "type": "colour",
+          "description": "Param_Colour"
+        },
+        {
+          "name": "complex",
+          "nick-name": "complex",
+          "type": "complex",
+          "description": "Param_Complex"
+        },
+        {
+          "name": "culture",
+          "nick-name": "culture",
+          "type": "culture",
+          "description": "Param_Culture"
+        },
+        {
+          "name": "curve",
+          "nick-name": "curve",
+          "type": "curve",
+          "description": "Param_Curve"
+        },
+        {
+          "name": "field",
+          "nick-name": "field",
+          "description": "Param_Field",
+          "type": "field"
+        },
+        {
+          "name": "filepath",
+          "nick-name": "filepath",
+          "type": "filepath",
+          "description": "Param_FilePath"
+        },
+        {
+          "name": "generic",
+          "nick-name": "generic",
+          "type": "generic",
+          "description": "Param_GenericObject"
+        },
+        {
+          "name": "geometry",
+          "nick-name": "geometry",
+          "type": "geometry",
+          "description": "Param_Geometry"
+        },
+        {
+          "name": "group",
+          "nick-name": "group",
+          "type": "group",
+          "description": "Param_Group"
+        },
+        {
+          "name": "guid",
+          "nick-name": "guid",
+          "type": "guid",
+          "description": "Param_Guid"
+        },
+        {
+          "name": "integer",
+          "nick-name": "integer",
+          "type": "integer",
+          "description": "Param_Integer"
+        },
+        {
+          "name": "interval",
+          "nick-name": "interval",
+          "type": "interval",
+          "description": "Param_Interval"
+        },
+        {
+          "name": "interval2d",
+          "nick-name": "interval2d",
+          "type": "interval2d",
+          "description": "Param_Interval2D"
+        },
+        {
+          "name": "latlonlocation",
+          "nick-name": "latlonlocation",
+          "type": "latlonlocation",
+          "description": "Param_LatLonLocation"
+        },
+        {
+          "name": "line",
+          "nick-name": "line",
+          "type": "line",
+          "description": "Param_Line"
+        },
+        {
+          "name": "matrix",
+          "nick-name": "matrix",
+          "type": "matrix",
+          "description": "Param_Matrix"
+        },
+        {
+          "name": "mesh",
+          "nick-name": "mesh",
+          "type": "mesh",
+          "description": "Param_Mesh"
+        },
+        {
+          "name": "meshface",
+          "nick-name": "meshface",
+          "type": "meshface",
+          "description": "Param_MeshFace"
+        },
+        {
+          "name": "meshparameters",
+          "nick-name": "meshparameters",
+          "type": "meshparameters",
+          "description": "Param_MeshParameters"
+        },
+        {
+          "name": "float",
+          "nick-name": "float",
+          "type": "float",
+          "description": "Param_Number"
+        },
+        {
+          "name": "oglshader",
+          "nick-name": "oglshader",
+          "type": "oglshader",
+          "description": "Param_OGLShader"
+        },
+        {
+          "name": "plane",
+          "nick-name": "plane",
+          "type": "plane",
+          "description": "Param_Plane"
+        },
+        {
+          "name": "point",
+          "nick-name": "point",
+          "type": "point",
+          "description": "Param_Point"
+        },
+        {
+          "name": "rectangle",
+          "nick-name": "rectangle",
+          "type": "rectangle",
+          "description": "Param_Rectangle"
+        },
+        {
+          "name": "scriptvariable",
+          "nick-name": "scriptvariable",
+          "type": "scriptvariable",
+          "description": "Param_ScriptVariable"
+        },
+        {
+          "name": "string",
+          "nick-name": "string",
+          "type": "string",
+          "description": "Param_String"
+        },
+        {
+          "name": "structurepath",
+          "nick-name": "structurepath",
+          "type": "structurepath",
+          "description": "Param_StructurePath"
+        },
+        {
+          "name": "surface",
+          "nick-name": "surface",
+          "type": "surface",
+          "description": "Param_Surface"
+        },
+        {
+          "name": "time",
+          "nick-name": "time",
+          "type": "time",
+          "description": "Param_Time"
+        },
+        {
+          "name": "transform",
+          "nick-name": "transform",
+          "type": "transform",
+          "description": "Param_Transform"
+        },
+        {
+          "name": "vector",
+          "nick-name": "vector",
+          "type": "vector",
+          "description": "Param_Vector"
+        }
+      ]
+    }
+  ]
+}

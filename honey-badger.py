@@ -135,6 +135,9 @@ def check_badger_config(badger_config):
                 input["nick-name"] = input["name"]
             if not "default" in input:
                 input["default"] = None
+            if not "access" in input:
+                input["access"] = "item"
+            assert input["access"] in {"item", "list", "tree"}, "Input Access needs to be either 'item', 'list' or 'tree'"
         for output in component["outputs"]:
             assert "type" in output, "Input needs a type"
             assert "name" in output, "Input needs a name"

@@ -15,14 +15,52 @@ def set_up_param(p, name, nickname, description):
     p.Optional = True
 
 
+# GH_ParamAccess type for input parameters
+PARAM_ACCESS_MAP = {
+    "item": Grasshopper.Kernel.GH_ParamAccess.item,
+    "list": Grasshopper.Kernel.GH_ParamAccess.list,
+    "tree": Grasshopper.Kernel.GH_ParamAccess.tree,
+}
+
 # Maps badger-file parameter names to the Parameter type to use
+# inluces all Grasshopper Params
 PARAMETER_MAP = {
-    'string': Grasshopper.Kernel.Parameters.Param_GenericObject,
-    'float': Grasshopper.Kernel.Parameters.Param_Number,
-    'number': Grasshopper.Kernel.Parameters.Param_Number,
-    'integer': Grasshopper.Kernel.Parameters.Param_Integer,
+    'arc': Grasshopper.Kernel.Parameters.Param_Arc,
     'boolean': Grasshopper.Kernel.Parameters.Param_Boolean,
+    'box': Grasshopper.Kernel.Parameters.Param_Box,
+    'brep': Grasshopper.Kernel.Parameters.Param_Brep,
+    'circle': Grasshopper.Kernel.Parameters.Param_Circle,
+    'colour': Grasshopper.Kernel.Parameters.Param_Colour,
+    'complex': Grasshopper.Kernel.Parameters.Param_Complex,
+    'culture': Grasshopper.Kernel.Parameters.Param_Culture,
+    'curve': Grasshopper.Kernel.Parameters.Param_Curve,
+    'field': Grasshopper.Kernel.Parameters.Param_Field,
+    'filepath': Grasshopper.Kernel.Parameters.Param_FilePath,
+    'generic': Grasshopper.Kernel.Parameters.Param_GenericObject,
+    'geometry': Grasshopper.Kernel.Parameters.Param_Geometry,
+    'group': Grasshopper.Kernel.Parameters.Param_Group,
+    'guid': Grasshopper.Kernel.Parameters.Param_Guid,
+    'integer': Grasshopper.Kernel.Parameters.Param_Integer,
+    'interval': Grasshopper.Kernel.Parameters.Param_Interval,
+    'interval2d': Grasshopper.Kernel.Parameters.Param_Interval2D,
+    'latlonlocation': Grasshopper.Kernel.Parameters.Param_LatLonLocation,
+    'line': Grasshopper.Kernel.Parameters.Param_Line,
+    'matrix': Grasshopper.Kernel.Parameters.Param_Matrix,
     'mesh': Grasshopper.Kernel.Parameters.Param_Mesh,
+    'meshface': Grasshopper.Kernel.Parameters.Param_MeshFace,
+    'meshparameters': Grasshopper.Kernel.Parameters.Param_MeshParameters,
+    'float': Grasshopper.Kernel.Parameters.Param_Number,
+    'oglshader': Grasshopper.Kernel.Parameters.Param_OGLShader,
+    'plane': Grasshopper.Kernel.Parameters.Param_Plane,
+    'point': Grasshopper.Kernel.Parameters.Param_Point,
+    'rectangle': Grasshopper.Kernel.Parameters.Param_Rectangle,
+    'scriptvariable': Grasshopper.Kernel.Parameters.Param_ScriptVariable,
+    'string': Grasshopper.Kernel.Parameters.Param_String,
+    'structurepath': Grasshopper.Kernel.Parameters.Param_StructurePath,
+    'surface': Grasshopper.Kernel.Parameters.Param_Surface,
+    'time': Grasshopper.Kernel.Parameters.Param_Time,
+    'transform': Grasshopper.Kernel.Parameters.Param_Transform,
+    'vector': Grasshopper.Kernel.Parameters.Param_Vector,
 }
 
 
@@ -49,7 +87,7 @@ def get_base_class(component):
             for input in component['inputs']:
                 p = PARAMETER_MAP[input['type']]()
                 set_up_param(p, input['name'], input['nick-name'], input['description'])
-                p.Access = Grasshopper.Kernel.GH_ParamAccess.item
+                p.Access = PARAM_ACCESS_MAP[input["access"]]
                 self.Params.Input.Add(p)
 
         def RegisterOutputParams(self, _):
