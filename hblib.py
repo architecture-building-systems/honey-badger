@@ -15,6 +15,13 @@ def set_up_param(p, name, nickname, description):
     p.Optional = True
 
 
+# GH_ParamAccess type for input parameters
+PARAM_ACCESS_MAP = {
+    "item": Grasshopper.Kernel.GH_ParamAccess.item,
+    "list": Grasshopper.Kernel.GH_ParamAccess.list,
+    "tree": Grasshopper.Kernel.GH_ParamAccess.tree,
+}
+
 # Maps badger-file parameter names to the Parameter type to use
 # inluces all Grasshopper Params
 PARAMETER_MAP = {
@@ -80,7 +87,7 @@ def get_base_class(component):
             for input in component['inputs']:
                 p = PARAMETER_MAP[input['type']]()
                 set_up_param(p, input['name'], input['nick-name'], input['description'])
-                p.Access = Grasshopper.Kernel.GH_ParamAccess.item
+                p.Access = PARAM_ACCESS_MAP[input["access"]]
                 self.Params.Input.Add(p)
 
         def RegisterOutputParams(self, _):
