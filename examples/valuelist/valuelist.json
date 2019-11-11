@@ -1,0 +1,22 @@
+{
+  "name": "valuelist",
+  "description": "adding GH_ValueList subclasses",
+  "version": "0.1",
+  "author": "daren-thomas",
+  "id": "883834f8-1049-4391-8789-163f20b53ea2",
+  "include-files": ["valuelist.py"],
+  "components": [
+    {
+      "class-name": "ValueListComponent",
+      "name": "ValueListPy",
+      "abbreviation": "vl",
+      "description": "Just a component",
+      "category": "Hello World Category",
+      "subcategory": "Hello World Sub-Category",
+      "id": "40f5ddff-dd8f-44b5-be75-465f2a54aa49",
+      "main-module": "valuelist",
+      "inputs": [],
+      "outputs": []
+    }
+  ]
+}
