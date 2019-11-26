@@ -24,7 +24,7 @@ import argparse
 import string
 import shutil
 import traceback
-
+import parameter_compiler
 
 def honey_badger_installation_folder():
     """Return the folder where honey-badger is installed / cloned to - we need this to find hblib.py
@@ -76,6 +76,10 @@ def main(badger_file, editable, install):
                            os.path.join(build_dir, hb_main_py),
                            dst_hblib_py,
                            *[os.path.join(badger_dir, f) for f in badger_config['include-files']])
+
+        if "parameters" in badger_config:
+            parameter_compiler.compile(badger_config["parameters"], badger_dir,
+                                       os.path.join(build_dir, "honey_badger_parameters_{guid}.gha".format(guid=guid)))
 
         if install:
             destination = os.path.join(os.path.expandvars("${APPDATA}"), "Grasshopper", "Libraries")

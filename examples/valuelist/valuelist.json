@@ -4,19 +4,48 @@
   "version": "0.1",
   "author": "daren-thomas",
   "id": "883834f8-1049-4391-8789-163f20b53ea2",
-  "include-files": ["valuelist.py"],
+  "include-files": [],
   "components": [
     {
-      "class-name": "ValueListComponent",
-      "name": "ValueListPy",
-      "abbreviation": "vl",
-      "description": "Just a component",
-      "category": "Hello World Category",
-      "subcategory": "Hello World Sub-Category",
-      "id": "40f5ddff-dd8f-44b5-be75-465f2a54aa49",
+      "class-name": "ShowPlanet",
+      "name": "ShowPlanet",
+      "abbreviation": "sp",
+      "description": "Shows planet data",
+      "category": "honey-badger",
+      "subcategory": "valuelist",
+      "id": "aed3aca3-efa8-4dd3-a4c6-6d79c4ae5b84",
       "main-module": "valuelist",
-      "inputs": [],
-      "outputs": []
+      "main-function": "show_planet",
+      "inputs": [
+        {
+          "name": "planet",
+          "nick-name": "planet",
+          "type": "string",
+          "description": "a planet to show",
+          "default": "<add planet>"
+        }
+      ],
+      "outputs": [
+        {
+          "name": "output",
+          "nick-name": "o",
+          "type": "string",
+          "description": "output of the script"
+        }
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "class-name": "PlanetValueList",
+      "name": "Planets",
+      "abbreviation": "pvl",
+      "description": "A list of planets",
+      "category": "honey-badger",
+      "subcategory": "valuelist",
+      "id": "b0daeded-082f-46c3-a52f-4de06421a45b",
+      "parameter-type": "ValueList",
+      "value-producer": "valuelist.py"
     }
   ]
 }
