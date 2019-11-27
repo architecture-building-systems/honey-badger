@@ -14,23 +14,12 @@ clr.AddReference("System.Reflection")
 clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\Plug-ins\Grasshopper\Grasshopper.dll")
 clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\System\RhinoCommon.dll")
 
-import Grasshopper
-import Grasshopper.Kernel
-import Grasshopper.Kernel.Special
-
-dir(Grasshopper.Kernel.Special)
-
-# emulate "using" from the C# examples
+from System import Array, Type
 from IronPython.Runtime.Operations import PythonOps
-import Grasshopper.Kernel.Special
-from System.Reflection import AssemblyName, TypeAttributes
+from System.Reflection import AssemblyName, TypeAttributes, MethodAttributes, CallingConventions
 from System.Reflection.Emit import AssemblyBuilderAccess
+from Grasshopper.Kernel.Special import GH_ValueList
 
-
-def get_GH_ValueList():
-    """For some reason I can't import this type, but it's possible to find it"""
-    return [t for t in clr.GetClrType(Grasshopper.Kernel.Special.GH_ValueListItem).Assembly.GetExportedTypes() if
-            str(t) == "Grasshopper.Kernel.Special.GH_ValueList"][0]
 
 def compile(parameters, badger_dir, dll_path):
     # https://docs.microsoft.com/en-us/dotnet/api/system.reflection.emit.assemblybuilder?view=netframework-4.8
@@ -41,7 +30,12 @@ def compile(parameters, badger_dir, dll_path):
         values = read_values(badger_dir, parameter["value-producer"])
         type_builder = module_builder.DefineType(parameter["class-name"],
                                                  TypeAttributes.Public,
-                                                 get_GH_ValueList())
+                                                 GH_ValueList)
+        constructor_builder = type_builder.DefineConstructor(MethodAttributes.Public, CallingConventions.Standard,
+                                                             Type.EmptyTypes)
+        t = type_builder.GetType()
+        assembly_builder.Save(assembly_name.Name + ".gha")
+
 
 
 def read_values(badger_dir, value_producer):
