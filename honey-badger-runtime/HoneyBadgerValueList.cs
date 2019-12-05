@@ -42,7 +42,7 @@ namespace HoneyBadgerRuntime
         /// Load the value list. NOTE: This is supposed to be overridden by the
         /// honey-badger parameter compiler.
         /// </summary>
-        protected virtual void LoadValueList()
+        public virtual void LoadValueList()
         {
             this.AddListItem("first key", "first value");
             this.AddListItem("second key", "second value");

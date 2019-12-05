@@ -68,8 +68,8 @@ def override_load_value_list(type_builder, keys, values):
     method_builder = type_builder.DefineMethod("LoadValueList", method_attributes, CallingConventions.Standard,
                                                None, None)
     il_generator = method_builder.GetILGenerator()
-
     for key, value in zip(keys, values):
+        il_generator.Emit(OpCodes.Ldarg_0)  # this
         il_generator.Emit(OpCodes.Ldstr, key)
         il_generator.Emit(OpCodes.Ldstr, value)
         il_generator.Emit.Overloads[OpCode, MethodInfo](OpCodes.Call, add_list_item)
