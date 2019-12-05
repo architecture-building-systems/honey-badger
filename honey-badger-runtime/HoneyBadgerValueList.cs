@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Grasshopper.Kernel.Expressions;
 using Grasshopper.Kernel.Special;
+using Grasshopper.Kernel.Data;
 
 namespace HoneyBadgerRuntime
 {
@@ -33,8 +35,23 @@ namespace HoneyBadgerRuntime
             this.m_guid = guid;
 
             this.ListItems.Clear();
-            this.ListItems.Add(new GH_ValueListItem("Testing", "did it work?"));
-            this.ListItems.Add(new GH_ValueListItem("Testing2", "did it work?"));
+            this.LoadValueList();
+        }
+
+        /// <summary>
+        /// Load the value list. NOTE: This is supposed to be overridden by the
+        /// honey-badger parameter compiler.
+        /// </summary>
+        protected virtual void LoadValueList()
+        {
+            this.AddListItem("first key", "first value");
+            this.AddListItem("second key", "second value");
+            this.AddListItem("third key", "third value");
+        }
+
+        public void AddListItem(string key, string value)
+        {
+            this.ListItems.Add(new GH_ValueListItem(key, value));
         }
 
         public override Guid ComponentGuid
@@ -42,6 +59,16 @@ namespace HoneyBadgerRuntime
             get
             {
                 return new Guid(this.m_guid);
+            }
+        }
+
+        protected override void CollectVolatileData_Custom()
+        {
+            this.m_data.Clear();
+            foreach (GH_ValueListItem item in this.SelectedItems)
+            {
+                GH_Variant value = new GH_Variant(item.Expression);
+                this.m_data.Append(value.ToGoo(), new GH_Path(0));
             }
         }
     }

@@ -45,7 +45,8 @@
       "subcategory": "valuelist",
       "id": "b0daeded-082f-46c3-a52f-4de06421a45b",
       "parameter-type": "ValueList",
-      "value-producer": "valuelist.py"
+      "value-producer": "valuelist.py",
+      "csv": "planets.csv"
     }
   ]
 }

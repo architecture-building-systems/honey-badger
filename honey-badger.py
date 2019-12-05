@@ -78,8 +78,8 @@ def main(badger_file, editable, install):
                            *[os.path.join(badger_dir, f) for f in badger_config['include-files']])
 
         if "parameters" in badger_config:
-            parameter_compiler.compile(badger_config["parameters"], badger_dir,
-                                       os.path.join(build_dir, "honey_badger_parameters_{guid}.gha".format(guid=guid)))
+            parameter_compiler.compile_parameters(badger_config, badger_dir,
+                                                  os.path.join(build_dir, "honey_badger_parameters_{guid}.gha".format(guid=guid)))
 
         if install:
             destination = os.path.join(os.path.expandvars("${APPDATA}"), "Grasshopper", "Libraries")
