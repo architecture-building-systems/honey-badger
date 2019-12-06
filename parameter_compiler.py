@@ -13,11 +13,12 @@ import clr
 clr.AddReference("IronPython")
 clr.AddReference("System")
 clr.AddReference("System.Reflection")
-clr.AddReferenceToFileAndPath(os.path.join("honey-badger-runtime", "bin", "honey-badger-runtime.dll"))
+clr.AddReferenceToFileAndPath(
+    os.path.join(os.path.dirname(__file__), "honey-badger-runtime", "bin", "honey-badger-runtime.dll"))
 clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\Plug-ins\Grasshopper\Grasshopper.dll")
 clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\System\RhinoCommon.dll")
 
-from System import Array, Type, Guid
+from System import Array, Type, AppDomain
 from IronPython.Runtime.Operations import PythonOps
 from System.Reflection import (AssemblyName, TypeAttributes, MethodInfo, MethodAttributes, CallingConventions,
                                PropertyAttributes)
@@ -32,8 +33,10 @@ def compile_parameters(badger_config, badger_dir, dll_path):
     parameters = badger_config["parameters"]
     base_constructor = clr.GetClrType(HoneyBadgerValueList).GetConstructor(Array[Type]([str, str, str, str, str, str]))
 
-    assembly_name = AssemblyName(os.path.splitext(os.path.basename(dll_path))[0])
-    assembly_builder = PythonOps.DefineDynamicAssembly(assembly_name, AssemblyBuilderAccess.RunAndSave)
+    dll_folder = os.path.dirname(dll_path)
+    dll_name = os.path.splitext(os.path.basename(dll_path))[0]
+    assembly_name = AssemblyName(dll_name)
+    assembly_builder = AppDomain.CurrentDomain.DefineDynamicAssembly(assembly_name, AssemblyBuilderAccess.RunAndSave, dll_folder)
     module_builder = assembly_builder.DefineDynamicModule(assembly_name.Name, assembly_name.Name + ".gha")
     for parameter in parameters:
         assert parameter["parameter-type"] == "ValueList", "honey-badger can only produce ValueList parameters"
