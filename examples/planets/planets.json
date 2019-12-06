@@ -1,6 +1,6 @@
 {
-  "name": "valuelist",
-  "description": "adding GH_ValueList subclasses",
+  "name": "planets",
+  "description": "adding GH_ValueList subclasses using planets as sample data",
   "version": "0.1",
   "author": "daren-thomas",
   "id": "883834f8-1049-4391-8789-163f20b53ea2",
@@ -12,15 +12,15 @@
       "abbreviation": "sp",
       "description": "Shows planet data",
       "category": "honey-badger",
-      "subcategory": "valuelist",
+      "subcategory": "planets",
       "id": "aed3aca3-efa8-4dd3-a4c6-6d79c4ae5b84",
-      "main-module": "valuelist",
+      "main-module": "planets",
       "main-function": "show_planet",
       "inputs": [
         {
           "name": "planet",
           "nick-name": "planet",
-          "type": "string",
+          "type": "json",
           "description": "a planet to show",
           "default": "<add planet>"
         }
@@ -42,7 +42,7 @@
       "abbreviation": "pvl",
       "description": "A list of planets",
       "category": "honey-badger",
-      "subcategory": "valuelist",
+      "subcategory": "planets",
       "id": "b0daeded-082f-46c3-a52f-4de06421a45b",
       "parameter-type": "ValueList",
       "csv": "planets.csv"
