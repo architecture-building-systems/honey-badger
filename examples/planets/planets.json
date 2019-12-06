@@ -4,7 +4,7 @@
   "version": "0.1",
   "author": "daren-thomas",
   "id": "883834f8-1049-4391-8789-163f20b53ea2",
-  "include-files": [],
+  "include-files": ["planets.py"],
   "components": [
     {
       "class-name": "ShowPlanet",

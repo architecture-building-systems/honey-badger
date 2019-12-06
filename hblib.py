@@ -6,6 +6,7 @@ from Grasshopper.Kernel import GH_ParamAccess
 import Grasshopper
 import System
 import importlib
+import json
 
 
 def set_up_param(p, name, nickname, description):
@@ -56,6 +57,7 @@ PARAMETER_MAP = {
     'rectangle': Grasshopper.Kernel.Parameters.Param_Rectangle,
     'scriptvariable': Grasshopper.Kernel.Parameters.Param_ScriptVariable,
     'string': Grasshopper.Kernel.Parameters.Param_String,
+    'json': Grasshopper.Kernel.Parameters.Param_String,
     'structurepath': Grasshopper.Kernel.Parameters.Param_StructurePath,
     'surface': Grasshopper.Kernel.Parameters.Param_Surface,
     'time': Grasshopper.Kernel.Parameters.Param_Time,
@@ -108,6 +110,15 @@ def get_base_class(component):
             else:
                 main_function = getattr(main_module, 'main')
             inputs = [self.marshal.GetInput(DA, i) for i in range(len(component['inputs']))]
+
+            # handle special input type "json":
+            for i, input_definition in enumerate(component['inputs']):
+                if input_definition["type"] == "json":
+                    try:
+                        inputs[i] = json.loads(inputs[i])
+                    except:
+                        inputs[i] = None
+
             # apply default values
             for i, input in enumerate(inputs):
                 if input is None and "default" in component["inputs"][i]:
