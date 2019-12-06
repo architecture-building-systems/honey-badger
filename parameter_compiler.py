@@ -5,8 +5,9 @@ will produce subclasses of "GH_ValueList" with a pre-compiled list of values.
 Why? Because GhPython only works for subclasses of "DotNetCompiledComponent" - So we're using Reflection.Emit to
 create a dll (a .gha _is_ a dll, just renamed...) with the types we want.
 """
-import imp
 import os
+import csv
+import json
 import clr
 
 clr.AddReference("IronPython")
@@ -26,6 +27,7 @@ from HoneyBadgerRuntime import HoneyBadgerValueList, HoneyBadgerRuntimeInfo
 
 
 def compile_parameters(badger_config, badger_dir, dll_path):
+    """Compile ValueList parameters and save them to a .gha assembly."""
     # https://docs.microsoft.com/en-us/dotnet/api/system.reflection.emit.assemblybuilder?view=netframework-4.8
     parameters = badger_config["parameters"]
     base_constructor = clr.GetClrType(HoneyBadgerValueList).GetConstructor(Array[Type]([str, str, str, str, str, str]))
@@ -34,7 +36,8 @@ def compile_parameters(badger_config, badger_dir, dll_path):
     assembly_builder = PythonOps.DefineDynamicAssembly(assembly_name, AssemblyBuilderAccess.RunAndSave)
     module_builder = assembly_builder.DefineDynamicModule(assembly_name.Name, assembly_name.Name + ".gha")
     for parameter in parameters:
-        values = read_values(badger_dir, parameter["value-producer"])
+        assert parameter["parameter-type"] == "ValueList", "honey-badger can only produce ValueList parameters"
+        keys, values = read_values(badger_dir, parameter["csv"])
         type_builder = module_builder.DefineType(parameter["class-name"],
                                                  TypeAttributes.Public,
                                                  HoneyBadgerValueList)
@@ -51,7 +54,7 @@ def compile_parameters(badger_config, badger_dir, dll_path):
         il_generator.Emit(OpCodes.Call, base_constructor)  # call constructor, consumes args and "this"
         il_generator.Emit(OpCodes.Ret)  # return from constructor
 
-        override_load_value_list(type_builder, keys=['one', 'two'], values=['hello', 'world'])
+        override_load_value_list(type_builder, keys=keys, values=values)
 
         type_builder.CreateType()
 
@@ -70,8 +73,8 @@ def override_load_value_list(type_builder, keys, values):
     il_generator = method_builder.GetILGenerator()
     for key, value in zip(keys, values):
         il_generator.Emit(OpCodes.Ldarg_0)  # this
-        il_generator.Emit(OpCodes.Ldstr, key)
-        il_generator.Emit(OpCodes.Ldstr, value)
+        il_generator.Emit(OpCodes.Ldstr, str(key))
+        il_generator.Emit(OpCodes.Ldstr, json.dumps(value))
         il_generator.Emit.Overloads[OpCode, MethodInfo](OpCodes.Call, add_list_item)
 
     il_generator.Emit(OpCodes.Ret)
@@ -109,7 +112,23 @@ def create_string_property(name, value, type_builder):
     property_builder.SetGetMethod(getter)
 
 
-def read_values(badger_dir, value_producer):
+def read_values(badger_dir, csv_file):
     """Import the value_producer module relative to badger_dir and return the results of running the main() function."""
-    producer = imp.load_source("producer", os.path.join(badger_dir, value_producer))
-    return producer.main()
+    with open(os.path.join(badger_dir, "planets.csv")) as planets:
+        reader = csv.DictReader(planets)
+        keys = []
+        values = []
+        for row in reader:
+            keys.append(row[reader.fieldnames[0]])
+            values.append(floatify(row))
+        return keys, values
+
+
+def floatify(dict):
+    """convert as many values to float as possible"""
+    for key in dict.keys():
+        try:
+           dict[key] = float(dict[key])
+        except ValueError:
+            pass
+    return dict
