@@ -9,12 +9,13 @@ import os
 import csv
 import json
 import clr
+from hblib import honey_badger_installation_folder
 
 clr.AddReference("IronPython")
 clr.AddReference("System")
 clr.AddReference("System.Reflection")
-clr.AddReferenceToFileAndPath(
-    os.path.join(os.path.dirname(__file__), "honey-badger-runtime", "bin", "honey-badger-runtime.dll"))
+hbrt_path = os.path.join(honey_badger_installation_folder(), "honey-badger-runtime", "bin", "honey-badger-runtime.dll")
+clr.AddReferenceToFileAndPath(hbrt_path)
 clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\Plug-ins\Grasshopper\Grasshopper.dll")
 clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\System\RhinoCommon.dll")
 
@@ -24,6 +25,7 @@ from System.Reflection import (AssemblyName, TypeAttributes, MethodInfo, MethodA
                                PropertyAttributes)
 from System.Reflection.Emit import AssemblyBuilderAccess, OpCode, OpCodes
 from Grasshopper.Kernel import GH_AssemblyInfo
+
 from HoneyBadgerRuntime import HoneyBadgerValueList, HoneyBadgerRuntimeInfo
 
 

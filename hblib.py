@@ -1,7 +1,11 @@
 """
 hblib - library functions for honey-badger components.
 """
-from GhPython.Assemblies import DotNetCompiledComponent
+import os
+
+import clr
+clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\Plug-ins\Grasshopper\Grasshopper.dll")
+clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\System\RhinoCommon.dll")
 from Grasshopper.Kernel import GH_ParamAccess
 import Grasshopper
 import System
@@ -131,3 +135,19 @@ def get_base_class(component):
                 for i, r in enumerate(results):
                     self.marshal.SetOutput(r, DA, i, True)
     return HoneyBadgerComponent
+
+
+def honey_badger_installation_folder():
+    """Return the folder where honey-badger is installed / cloned to - we need this to find hblib.py
+    The tricky bit is that when compiled to honey-badger.exe, the path to `__file__` is always the current
+    directory.
+    """
+    clr.AddReference("System.Reflection")
+    import System.Reflection
+    entry_assembly_location = System.Reflection.Assembly.GetEntryAssembly().Location
+    if entry_assembly_location.endswith("honey-badger.exe"):
+        # compiled version, we're our own entry-assembly
+        return os.path.dirname(os.path.normpath(os.path.abspath(entry_assembly_location)))
+    else:
+        # script version, __file__ actually refers to the proper location
+        return os.path.dirname(os.path.normpath(os.path.abspath(__file__)))

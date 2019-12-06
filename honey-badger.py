@@ -25,22 +25,7 @@ import string
 import shutil
 import traceback
 import parameter_compiler
-
-
-def honey_badger_installation_folder():
-    """Return the folder where honey-badger is installed / cloned to - we need this to find hblib.py
-    The tricky bit is that when compiled to honey-badger.exe, the path to `__file__` is always the current
-    directory.
-    """
-    clr.AddReference("System.Reflection")
-    import System.Reflection
-    entry_assembly_location = System.Reflection.Assembly.GetEntryAssembly().Location
-    if entry_assembly_location.endswith("honey-badger.exe"):
-        # compiled version, we're our own entry-assembly
-        return os.path.dirname(os.path.normpath(os.path.abspath(entry_assembly_location)))
-    else:
-        # script version, __file__ actually refers to the proper location
-        return os.path.dirname(os.path.normpath(os.path.abspath(__file__)))
+from hblib import honey_badger_installation_folder
 
 
 def main(badger_file, editable, install):
