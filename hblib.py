@@ -1,7 +1,6 @@
 """
 hblib - library functions for honey-badger components.
 """
-print("inside hblib")
 import clr
 clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\Plug-ins\Grasshopper\Grasshopper.dll")
 clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\System\RhinoCommon.dll")
@@ -10,7 +9,6 @@ import Grasshopper
 import System
 import importlib
 import json
-print("hblib after imports")
 
 def set_up_param(p, name, nickname, description):
     p.Name = name
@@ -25,47 +23,10 @@ PARAM_ACCESS_MAP = {
     "list": Grasshopper.Kernel.GH_ParamAccess.list,
     "tree": Grasshopper.Kernel.GH_ParamAccess.tree,
 }
-print("hblib after PARAM_ACCESS_MAP")
-print("'arc': %s" % Grasshopper.Kernel.Parameters.Param_Arc)
-print("'boolean': %s" % Grasshopper.Kernel.Parameters.Param_Boolean)
-print("'box': %s" % Grasshopper.Kernel.Parameters.Param_Box)
-print("'brep': %s" % Grasshopper.Kernel.Parameters.Param_Brep)
-print("'circle': %s" % Grasshopper.Kernel.Parameters.Param_Circle)
-print("'colour': %s" % Grasshopper.Kernel.Parameters.Param_Colour)
-print("'complex': %s" % Grasshopper.Kernel.Parameters.Param_Complex)
-print("'culture': %s" % Grasshopper.Kernel.Parameters.Param_Culture)
-print("'curve': %s" % Grasshopper.Kernel.Parameters.Param_Curve)
-print("'field': %s" % Grasshopper.Kernel.Parameters.Param_Field)
-print("'filepath': %s" % Grasshopper.Kernel.Parameters.Param_FilePath)
-print("'generic': %s" % Grasshopper.Kernel.Parameters.Param_GenericObject)
-print("'geometry': %s" % Grasshopper.Kernel.Parameters.Param_Geometry)
-print("'group': %s" % Grasshopper.Kernel.Parameters.Param_Group)
-print("'guid': %s" % Grasshopper.Kernel.Parameters.Param_Guid)
-print("'integer': %s" % Grasshopper.Kernel.Parameters.Param_Integer)
-print("'interval': %s" % Grasshopper.Kernel.Parameters.Param_Interval)
-print("'interval2d': %s" % Grasshopper.Kernel.Parameters.Param_Interval2D)
-print("'latlonlocation': %s" % Grasshopper.Kernel.Parameters.Param_LatLonLocation)
-print("'line': %s" % Grasshopper.Kernel.Parameters.Param_Line)
-print("'matrix': %s" % Grasshopper.Kernel.Parameters.Param_Matrix)
-print("'mesh': %s" % Grasshopper.Kernel.Parameters.Param_Mesh)
-print("'meshface': %s" % Grasshopper.Kernel.Parameters.Param_MeshFace)
-print("'meshparameters': %s" % Grasshopper.Kernel.Parameters.Param_MeshParameters)
-print("'float': %s" % Grasshopper.Kernel.Parameters.Param_Number)
-print("'oglshader': %s" % Grasshopper.Kernel.Parameters.Param_OGLShader)
-print("'plane': %s" % Grasshopper.Kernel.Parameters.Param_Plane)
-print("'point': %s" % Grasshopper.Kernel.Parameters.Param_Point)
-print("'rectangle': %s" % Grasshopper.Kernel.Parameters.Param_Rectangle)
-print("'scriptvariable': %s" % Grasshopper.Kernel.Parameters.Param_ScriptVariable)
-print("'string': %s" % Grasshopper.Kernel.Parameters.Param_String)
-print("'json': %s" % Grasshopper.Kernel.Parameters.Param_String)
-print("'structurepath': %s" % Grasshopper.Kernel.Parameters.Param_StructurePath)
-print("'surface': %s" % Grasshopper.Kernel.Parameters.Param_Surface)
-print("'time': %s" % Grasshopper.Kernel.Parameters.Param_Time)
-print("'transform': %s" % Grasshopper.Kernel.Parameters.Param_Transform)
-print("'vector': %s" % Grasshopper.Kernel.Parameters.Param_Vector)
+
 
 # Maps badger-file parameter names to the Parameter type to use
-# inluces all Grasshopper Params
+# includes all Grasshopper Params
 PARAMETER_MAP = {
     'arc': Grasshopper.Kernel.Parameters.Param_Arc,
     'boolean': Grasshopper.Kernel.Parameters.Param_Boolean,
@@ -106,7 +67,6 @@ PARAMETER_MAP = {
     'vector': Grasshopper.Kernel.Parameters.Param_Vector,
 }
 
-print("hblib after PARAMETER_MAP")
 
 def get_base_class(component):
     """
@@ -173,6 +133,3 @@ def get_base_class(component):
                 for i, r in enumerate(results):
                     self.marshal.SetOutput(r, DA, i, True)
     return HoneyBadgerComponent
-
-
-print("hblib end of module")

@@ -5,12 +5,10 @@ will produce subclasses of "GH_ValueList" with a pre-compiled list of values.
 Why? Because GhPython only works for subclasses of "DotNetCompiledComponent" - So we're using Reflection.Emit to
 create a dll (a .gha _is_ a dll, just renamed...) with the types we want.
 """
-print("before imports")
 import os
 import csv
 import json
 import clr
-print("between imports")
 
 clr.AddReference("IronPython")
 clr.AddReference("System")
@@ -30,7 +28,6 @@ from System.Reflection.Emit import AssemblyBuilderAccess, OpCode, OpCodes
 from Grasshopper.Kernel import GH_AssemblyInfo
 
 from HoneyBadgerRuntime import HoneyBadgerValueList, HoneyBadgerRuntimeInfo
-print("after imports")
 
 
 def compile_parameters(badger_config, badger_dir, dll_path):
