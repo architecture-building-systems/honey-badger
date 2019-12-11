@@ -25,7 +25,7 @@ import string
 import shutil
 import traceback
 import parameter_compiler
-from hblib import honey_badger_installation_folder
+from parameter_compiler import honey_badger_installation_folder
 
 
 def main(badger_file, editable, install):

@@ -5,15 +5,34 @@ will produce subclasses of "GH_ValueList" with a pre-compiled list of values.
 Why? Because GhPython only works for subclasses of "DotNetCompiledComponent" - So we're using Reflection.Emit to
 create a dll (a .gha _is_ a dll, just renamed...) with the types we want.
 """
+print("before imports")
 import os
 import csv
 import json
 import clr
-from hblib import honey_badger_installation_folder
+print("between imports")
 
 clr.AddReference("IronPython")
 clr.AddReference("System")
 clr.AddReference("System.Reflection")
+
+
+def honey_badger_installation_folder():
+    """Return the folder where honey-badger is installed / cloned to - we need this to find hblib.py
+    The tricky bit is that when compiled to honey-badger.exe, the path to `__file__` is always the current
+    directory.
+    """
+    clr.AddReference("System.Reflection")
+    import System.Reflection
+    entry_assembly_location = System.Reflection.Assembly.GetEntryAssembly().Location
+    if entry_assembly_location.endswith("honey-badger.exe"):
+        # compiled version, we're our own entry-assembly
+        return os.path.dirname(os.path.normpath(os.path.abspath(entry_assembly_location)))
+    else:
+        # script version, __file__ actually refers to the proper location
+        return os.path.dirname(os.path.normpath(os.path.abspath(__file__)))
+
+
 hbrt_path = os.path.join(honey_badger_installation_folder(), "honey-badger-runtime", "bin", "honey-badger-runtime.dll")
 clr.AddReferenceToFileAndPath(hbrt_path)
 clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\Plug-ins\Grasshopper\Grasshopper.dll")
@@ -27,6 +46,7 @@ from System.Reflection.Emit import AssemblyBuilderAccess, OpCode, OpCodes
 from Grasshopper.Kernel import GH_AssemblyInfo
 
 from HoneyBadgerRuntime import HoneyBadgerValueList, HoneyBadgerRuntimeInfo
+print("after imports")
 
 
 def compile_parameters(badger_config, badger_dir, dll_path):
