@@ -17,29 +17,13 @@ clr.AddReference("System")
 clr.AddReference("System.Reflection")
 
 
-def honey_badger_installation_folder():
-    """Return the folder where honey-badger is installed / cloned to - we need this to find hblib.py
-    The tricky bit is that when compiled to honey-badger.exe, the path to `__file__` is always the current
-    directory.
-    """
-    clr.AddReference("System.Reflection")
-    import System.Reflection
-    entry_assembly_location = System.Reflection.Assembly.GetEntryAssembly().Location
-    if entry_assembly_location.endswith("honey-badger.exe"):
-        # compiled version, we're our own entry-assembly
-        return os.path.dirname(os.path.normpath(os.path.abspath(entry_assembly_location)))
-    else:
-        # script version, __file__ actually refers to the proper location
-        return os.path.dirname(os.path.normpath(os.path.abspath(__file__)))
-
-
-hbrt_path = os.path.join(honey_badger_installation_folder(), "honey-badger-runtime", "bin", "honey-badger-runtime.dll")
+hbrt_path = os.path.join(os.path.dirname(os.path.normpath(os.path.abspath(__file__))), "honey-badger-runtime", "bin",
+                         "honey-badger-runtime.dll")
 clr.AddReferenceToFileAndPath(hbrt_path)
 clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\Plug-ins\Grasshopper\Grasshopper.dll")
 clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\System\RhinoCommon.dll")
 
 from System import Array, Type, AppDomain
-from IronPython.Runtime.Operations import PythonOps
 from System.Reflection import (AssemblyName, TypeAttributes, MethodInfo, MethodAttributes, CallingConventions,
                                PropertyAttributes)
 from System.Reflection.Emit import AssemblyBuilderAccess, OpCode, OpCodes

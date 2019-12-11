@@ -25,7 +25,6 @@ import string
 import shutil
 import traceback
 import parameter_compiler
-from parameter_compiler import honey_badger_installation_folder
 
 
 def main(badger_file, editable, install):
@@ -51,7 +50,7 @@ def main(badger_file, editable, install):
             hb_main.write(template.substitute(badger_config=json_badger_config, guid=guid))
 
         # copy hblib.py to build dir
-        src_hblib_py = os.path.join(honey_badger_installation_folder(), 'hblib.py')
+        src_hblib_py = os.path.join(os.path.dirname(os.path.normpath(os.path.abspath(__file__))), 'hblib.py')
         dst_hblib_py = os.path.join(build_dir, "hblib_{guid}.py".format(guid=guid))
         # print("Copying hblib.py from {src} to {dst}".format(src=src_hblib_py, dst=dst_hblib_py))
         shutil.copy(src_hblib_py, dst_hblib_py)
@@ -78,8 +77,8 @@ def main(badger_file, editable, install):
                 print("installing {gha_name} to {destination}".format(
                     gha_name=os.path.basename(gha_path), destination=destination))
                 shutil.copy(gha_path, destination)
-                hbrt_path = os.path.join(honey_badger_installation_folder(), "honey-badger-runtime", "bin",
-                                         "honey-badger-runtime.dll")
+                hbrt_path = os.path.join(os.path.dirname(os.path.normpath(os.path.abspath(__file__))),
+                                         "honey-badger-runtime", "bin", "honey-badger-runtime.dll")
                 print("installing {hbrt_name} to {destination}".format(
                     hbrt_name=os.path.basename(hbrt_path), destination=destination))
                 shutil.copy(hbrt_path, destination)
