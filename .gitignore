@@ -23,7 +23,7 @@
 x64/
 x86/
 bld/
-[Bb]in/
+# [Bb]in/
 [Oo]bj/
 [Ll]og/
 
@@ -333,4 +333,4 @@ ASALocalRun/
 .mfractor/
 
 # (except honey-badger-runtime.dll)
-!honey-badger-runtime/bin/honey-badger-runtime.dll
+honey-badger-runtime/bin/ghpython.dll
