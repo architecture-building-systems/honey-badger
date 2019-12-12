@@ -24,22 +24,7 @@ import argparse
 import string
 import shutil
 import traceback
-
-
-def honey_badger_installation_folder():
-    """Return the folder where honey-badger is installed / cloned to - we need this to find hblib.py
-    The tricky bit is that when compiled to honey-badger.exe, the path to `__file__` is always the current
-    directory.
-    """
-    clr.AddReference("System.Reflection")
-    import System.Reflection
-    entry_assembly_location = System.Reflection.Assembly.GetEntryAssembly().Location
-    if entry_assembly_location.endswith("honey-badger.exe"):
-        # compiled version, we're our own entry-assembly
-        return os.path.dirname(os.path.normpath(os.path.abspath(entry_assembly_location)))
-    else:
-        # script version, __file__ actually refers to the proper location
-        return os.path.dirname(os.path.normpath(os.path.abspath(__file__)))
+import parameter_compiler
 
 
 def main(badger_file, editable, install):
@@ -65,23 +50,38 @@ def main(badger_file, editable, install):
             hb_main.write(template.substitute(badger_config=json_badger_config, guid=guid))
 
         # copy hblib.py to build dir
-        src_hblib_py = os.path.join(honey_badger_installation_folder(), 'hblib.py')
+        src_hblib_py = os.path.join(os.path.dirname(os.path.normpath(os.path.abspath(__file__))), 'hblib.py')
         dst_hblib_py = os.path.join(build_dir, "hblib_{guid}.py".format(guid=guid))
         # print("Copying hblib.py from {src} to {dst}".format(src=src_hblib_py, dst=dst_hblib_py))
         shutil.copy(src_hblib_py, dst_hblib_py)
 
         # compile to .ghpy file
-        ghpy_path = os.path.join(build_dir, '{}.ghpy'.format(badger_config['name']))
+        ghpy_path = os.path.join(build_dir, "{}.ghpy".format(badger_config['name']))
         clr.CompileModules(ghpy_path,
                            os.path.join(build_dir, hb_main_py),
                            dst_hblib_py,
                            *[os.path.join(badger_dir, f) for f in badger_config['include-files']])
+
+        gha_path = os.path.join(build_dir, "{}.gha".format(badger_config['name']))
+        if "parameters" in badger_config:
+            parameter_compiler.compile_parameters(
+                badger_config, badger_dir, os.path.join(build_dir, gha_path))
 
         if install:
             destination = os.path.join(os.path.expandvars("${APPDATA}"), "Grasshopper", "Libraries")
             print('installing {ghpy_name} to {destination}'.format(
                 ghpy_name=os.path.basename(ghpy_path), destination=destination))
             shutil.copy(ghpy_path, destination)
+
+            if "parameters" in badger_config:
+                print("installing {gha_name} to {destination}".format(
+                    gha_name=os.path.basename(gha_path), destination=destination))
+                shutil.copy(gha_path, destination)
+                hbrt_path = os.path.join(os.path.dirname(os.path.normpath(os.path.abspath(__file__))),
+                                         "honey-badger-runtime", "bin", "honey-badger-runtime.dll")
+                print("installing {hbrt_name} to {destination}".format(
+                    hbrt_name=os.path.basename(hbrt_path), destination=destination))
+                shutil.copy(hbrt_path, destination)
 
             # copy additional files (from "include-install")
             for file_name in badger_config["include-install"]:
