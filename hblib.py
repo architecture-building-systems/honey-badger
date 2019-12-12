@@ -2,9 +2,8 @@
 hblib - library functions for honey-badger components.
 """
 import clr
-clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\Plug-ins\Grasshopper\Grasshopper.dll")
-clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\System\RhinoCommon.dll")
 from Grasshopper.Kernel import GH_ParamAccess
+from GhPython.Assemblies import DotNetCompiledComponent
 import Grasshopper
 import System
 import importlib
