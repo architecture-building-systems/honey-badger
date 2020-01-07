@@ -17,6 +17,11 @@ plugin that allows the CEA scripts to be run from in GrassHopper. But this compo
 and uses a `script-name` input parameter to decide which CEA script to run. Since the CEA has meta-data about all the scripts' 
 parameters, a GH component for each script in the CEA family could be created. honey-badger could be a part of such a sollution. 
 
+## How To Use
+- open command shell (windows-key + R, then enter ``cmd``)
+- navigate to your IronPython installation folder, for me it's C:\Program Files\IronPython 2.7
+- enter: ``ipy.exe honey-badger_path\honey-badger.py grasshopper-project_path\component.json``
+
 ## A collection of links and facts I've found while researching possible solutions
 
 - https://discourse.mcneel.com/t/tutorial-creating-a-grasshopper-component-with-the-python-ghpy-compiler/38552
