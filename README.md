@@ -20,7 +20,8 @@ parameters, a GH component for each script in the CEA family could be created. h
 ## How To Use
 - open command shell (windows-key + R, then enter ``cmd``)
 - navigate to your IronPython installation folder, for me it's C:\Program Files\IronPython 2.7
-- enter: ``ipy.exe honey-badger_path\honey-badger.py grasshopper-project_path\component.json``
+- enter: ``ipy.exe honey-badger_path\honey-badger.py grasshopper-project_path\component.json -i``
+- your new python component should now be loaded when opening grasshopper
 
 ## A collection of links and facts I've found while researching possible solutions
 
