@@ -120,8 +120,8 @@ def create_string_property(name, value, type_builder):
 
 def read_values(badger_dir, csv_file):
     """Import the value_producer module relative to badger_dir and return the results of running the main() function."""
-    with open(os.path.join(badger_dir, "planets.csv")) as planets:
-        reader = csv.DictReader(planets)
+    with open(os.path.join(badger_dir, csv_file)) as csv_fp:
+        reader = csv.DictReader(csv_fp)
         keys = []
         values = []
         for row in reader:
@@ -137,4 +137,6 @@ def floatify(dict):
            dict[key] = float(dict[key])
         except ValueError:
             pass
+        except SystemError:
+            print dict
     return dict
