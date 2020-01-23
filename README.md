@@ -42,3 +42,4 @@ parameters, a GH component for each script in the CEA family could be created. h
 - You can use typehints of .Net libraries by importing stubs: https://stevebaer.wordpress.com/2019/02/25/autocomplete-and-type-hints-with-python-scripts-for-rhino-grasshopper/
 	- Make sure you set your Python interpreter to Python 2.7, otherwise with IronPython it won't let you install the stub files. In PyCharm: File->Settings->Projet:Honey-Badger->Project Interpreter.
 	- Don't forget to install clr package to your Python 2.7 environment
+- You can package .csv databases into your component, with Daren's awesome [plantes-example](/examples/planets/). But make sure it follows the same structure as his .csv example file, i.e. 1 header, comma separated, utf-8 encoding
