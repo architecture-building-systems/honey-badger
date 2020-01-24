@@ -43,3 +43,4 @@ parameters, a GH component for each script in the CEA family could be created. h
 	- Make sure you set your Python interpreter to Python 2.7, otherwise with IronPython it won't let you install the stub files. In PyCharm: File->Settings->Projet:Honey-Badger->Project Interpreter.
 	- Don't forget to install clr package to your Python 2.7 environment
 - You can package .csv databases into your component, with Daren's awesome [planets-example](/examples/planets/). But make sure it follows the same structure as his .csv example file, i.e. 1 header, comma separated, utf-8 encoding
+	- Make sure you have `from __future__ import print_function` in your `.py` file, otherwise you'll get an error in Grasshopper: `The supplied data could not be converted: Parameter type: GH_Number. Supplied type: String`
