@@ -18,7 +18,7 @@ and uses a `script-name` input parameter to decide which CEA script to run. Sinc
 parameters, a GH component for each script in the CEA family could be created. honey-badger could be a part of such a sollution. 
 
 ## How To Use
-- Put this [honey-badger-runtim.dll](https://github.com/architecture-building-systems/honey-badger/blob/master/honey-badger-runtime/bin/honey-badger-runtime.dll) into your Rhino Grasshopper Components Library folder
+- Put this [honey-badger-runtime.dll](https://github.com/architecture-building-systems/honey-badger/blob/master/honey-badger-runtime/bin/honey-badger-runtime.dll) into your Rhino Grasshopper Components Library folder
 - open command shell (windows-key + R, then enter ``cmd``)
 - navigate to your IronPython installation folder, for me it's C:\Program Files\IronPython 2.7
 - enter: ``ipy.exe honey-badger_path\honey-badger.py grasshopper-project_path\component.json -i``
