@@ -1,4 +1,5 @@
 # honey-badger
+
 honey-badger is a build system for Python based Rhino/Grasshopper plugins
 
 ## Why bother?
@@ -18,10 +19,11 @@ and uses a `script-name` input parameter to decide which CEA script to run. Sinc
 parameters, a GH component for each script in the CEA family could be created. honey-badger could be a part of such a sollution. 
 
 ## How To Use
-- Put this [honey-badger-runtime.dll](https://github.com/architecture-building-systems/honey-badger/blob/master/honey-badger-runtime/bin/honey-badger-runtime.dll) into your Rhino Grasshopper Components Library folder
+
 - open command shell (windows-key + R, then enter ``cmd``)
 - navigate to your IronPython installation folder, for me it's C:\Program Files\IronPython 2.7
-- enter: ``ipy.exe honey-badger_path\honey-badger.py grasshopper-project_path\component.json -i``
+- enter: ``ipy.exe honey-badger_path\honey-badger.py -i grasshopper-project_path\component.json``
+  - NOTE: You should have the exact same version of IronPython installed as Grasshopper uses. At the time of writing this is 2.7.8 and can be installed from here: https://github.com/IronLanguages/ironpython2/releases/tag/ipy-2.7.8
 - your new python component should now be loaded when opening grasshopper
 
 ## A collection of links and facts I've found while researching possible solutions
@@ -38,10 +40,10 @@ parameters, a GH component for each script in the CEA family could be created. h
 ## FAQ
 
 - You can use .Net libraries with the clr libray. This is a simple example [usecsharpdll](/examples/usecsharpdll/usecsharpdll.py) 
-	- Your Python IDE won't recognize that library, meaning it will tell you that no module named `yourlibrary` is found. But you can still use it.
-	- Installing stubs (if any exist for your library) will solve this problem. See next point
+  - Your Python IDE won't recognize that library, meaning it will tell you that no module named `yourlibrary` is found. But you can still use it.
+  - Installing stubs (if any exist for your library) will solve this problem. See next point
 - You can use typehints of .Net libraries by importing stubs: https://stevebaer.wordpress.com/2019/02/25/autocomplete-and-type-hints-with-python-scripts-for-rhino-grasshopper/
-	- Make sure you set your Python interpreter to Python 2.7, otherwise with IronPython it won't let you install the stub files. In PyCharm: File->Settings->Projet:Honey-Badger->Project Interpreter.
-	- Don't forget to install clr package to your Python 2.7 environment
+  - Make sure you set your Python interpreter to Python 2.7, otherwise with IronPython it won't let you install the stub files. In PyCharm: File->Settings->Projet:Honey-Badger->Project Interpreter.
+  - Don't forget to install clr package to your Python 2.7 environment
 - You can package .csv databases into your component, with Daren's awesome [planets-example](/examples/planets/). But make sure it follows the same structure as his .csv example file, i.e. 1 header, comma separated, utf-8 encoding
-	- Make sure you have `from __future__ import print_function` in your `.py` file, otherwise you'll get an error in Grasshopper: `The supplied data could not be converted: Parameter type: GH_Number. Supplied type: String`
+  - Make sure you have `from __future__ import print_function` in your `.py` file, otherwise you'll get an error in Grasshopper: `The supplied data could not be converted: Parameter type: GH_Number. Supplied type: String`
