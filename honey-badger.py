@@ -26,6 +26,11 @@ import shutil
 import traceback
 import parameter_compiler
 
+clr.AddReference("System")
+clr.AddReference("System.IO")
+import System
+import System.IO
+
 
 def main(badger_file, editable, install):
     try:
@@ -34,12 +39,12 @@ def main(badger_file, editable, install):
             badger_file_contents = bf.read()
             badger_config = json.loads(badger_file_contents)
 
-        badger_config = check_badger_config(badger_config)
-
         badger_dir = os.path.abspath(os.path.dirname(badger_file))
         build_dir = os.path.join(badger_dir, '_build')
         if not os.path.exists(build_dir):
             os.makedirs(build_dir)
+
+        badger_config = check_badger_config(badger_config, badger_dir)
 
         template = string.Template(TEMPLATE)
         guid = badger_config["id"].replace('-', '_')
@@ -99,7 +104,7 @@ def main(badger_file, editable, install):
         print traceback.print_exc()
 
 
-def check_badger_config(badger_config):
+def check_badger_config(badger_config, badger_dir):
     """
     Make sure the badger file contains all the required info. Fill in default values if they don't exist yet.
 
@@ -144,6 +149,13 @@ def check_badger_config(badger_config):
             assert "description" in output, "Input needs a description"
             if not "nick-name" in output:
                 output["nick-name"] = output["name"]
+        if "icon" in component:
+            # convert icon (a path) to a base64 string
+            icon_path = os.path.join(badger_dir, component["icon"])
+            assert os.path.exists(icon_path), "Could not find icon file: {}".format(icon_path)
+            bytes = System.IO.File.ReadAllBytes(icon_path)
+            icon_base64 = System.Convert.ToBase64String(bytes)
+            component["icon"] = icon_base64
     return badger_config
 
 
