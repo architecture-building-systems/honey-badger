@@ -107,15 +107,28 @@ def get_base_class(component):
                 icon_base64 = component["icon"]
             return System.Drawing.Bitmap(System.IO.MemoryStream(System.Convert.FromBase64String(icon_base64)))
 
-
         def SolveInstance(self, DA):
-            main_module = importlib.import_module(component['main-module'])
-            if 'main-function' in component:
-                main_function = getattr(main_module, component['main-function'])
-            else:
-                main_function = getattr(main_module, 'main')
-            inputs = [self.marshal.GetInput(DA, i) for i in range(len(component['inputs']))]
+            try:
+                main_function = self.locate_main_function()
+                inputs = self.prepare_inputs(DA)
 
+                results = main_function(*inputs)
+
+                self.marshal_results(DA, results)
+            except:
+                import Rhino, traceback
+                Rhino.RhinoApp.WriteLine(traceback.format_exc())
+                raise
+
+        def marshal_results(self, DA, results):
+            if len(component['outputs']) == 1:
+                self.marshal.SetOutput(results, DA, 0, True)
+            elif len(component['outputs']) > 1:
+                for i, r in enumerate(results):
+                    self.marshal.SetOutput(r, DA, i, True)
+
+        def prepare_inputs(self, DA):
+            inputs = [self.marshal.GetInput(DA, i) for i in range(len(component['inputs']))]
             # handle special input type "json":
             for i, input_definition in enumerate(component['inputs']):
                 if input_definition["type"] == "json":
@@ -123,55 +136,41 @@ def get_base_class(component):
                         inputs[i] = json.loads(inputs[i])
                     except:
                         inputs[i] = None
-
             # apply default values
             for i, input in enumerate(inputs):
                 if input is None and "default" in component["inputs"][i]:
                     inputs[i] = component["inputs"][i]["default"]
+            return inputs
 
-            results = main_function(*inputs)
-            if len(component['outputs']) == 1:
-                self.marshal.SetOutput(results, DA, 0, True)
-            elif len(component['outputs']) > 1:
-                for i, r in enumerate(results):
-                    self.marshal.SetOutput(r, DA, i, True)
+        def locate_main_function(self):
+            main_module = importlib.import_module(component['main-module'])
+            if 'main-function' in component:
+                main_function = getattr(main_module, component['main-function'])
+            else:
+                main_function = getattr(main_module, 'main')
+            return main_function
 
     class HoneyBadgerKwargsComponent(HoneyBadgerComponent):
         """pass args to main-function by name instead of by position"""
         def SolveInstance(self, DA):
-            main_module = importlib.import_module(component['main-module'])
-            if 'main-function' in component:
-                main_function = getattr(main_module, component['main-function'])
-            else:
-                main_function = getattr(main_module, 'main')
-            inputs = [self.marshal.GetInput(DA, i) for i in range(len(component['inputs']))]
+            try:
+                main_function = self.locate_main_function()
+                inputs = self.prepare_inputs(DA)
 
-            # handle special input type "json":
-            for i, input_definition in enumerate(component['inputs']):
-                if input_definition["type"] == "json":
-                    try:
-                        inputs[i] = json.loads(inputs[i])
-                    except:
-                        inputs[i] = None
+                results = main_function(**self.inputs_as_dict(inputs))
 
-            # apply default values
-            for i, input in enumerate(inputs):
-                if input is None and "default" in component["inputs"][i]:
-                    inputs[i] = component["inputs"][i]["default"]
+                self.marshal_results(DA, results)
 
-            # create kwargs
-            kwargs = {
+            except:
+                import Rhino, traceback
+                Rhino.RhinoApp.WriteLine(traceback.format_exc())
+                raise
+
+        def inputs_as_dict(self, inputs):
+            return {
                 input_definition["name"]: inputs[i]
                 for i, input_definition in enumerate(component["inputs"])
             }
-
-            results = main_function(**kwargs)
-
-            if len(component['outputs']) == 1:
-                self.marshal.SetOutput(results, DA, 0, True)
-            elif len(component['outputs']) > 1:
-                for i, r in enumerate(results):
-                    self.marshal.SetOutput(r, DA, i, True)
 
     if component.get("use-kwargs", False):
         return HoneyBadgerKwargsComponent
