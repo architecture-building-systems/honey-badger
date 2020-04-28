@@ -136,42 +136,42 @@ def get_base_class(component):
                 for i, r in enumerate(results):
                     self.marshal.SetOutput(r, DA, i, True)
 
-        class HoneyBadgerKwargsComponent(HoneyBadgerComponent):
-            """pass args to main-function by name instead of by position"""
-            def SolveInstance(self, DA):
-                main_module = importlib.import_module(component['main-module'])
-                if 'main-function' in component:
-                    main_function = getattr(main_module, component['main-function'])
-                else:
-                    main_function = getattr(main_module, 'main')
-                inputs = [self.marshal.GetInput(DA, i) for i in range(len(component['inputs']))]
+    class HoneyBadgerKwargsComponent(HoneyBadgerComponent):
+        """pass args to main-function by name instead of by position"""
+        def SolveInstance(self, DA):
+            main_module = importlib.import_module(component['main-module'])
+            if 'main-function' in component:
+                main_function = getattr(main_module, component['main-function'])
+            else:
+                main_function = getattr(main_module, 'main')
+            inputs = [self.marshal.GetInput(DA, i) for i in range(len(component['inputs']))]
 
-                # handle special input type "json":
-                for i, input_definition in enumerate(component['inputs']):
-                    if input_definition["type"] == "json":
-                        try:
-                            inputs[i] = json.loads(inputs[i])
-                        except:
-                            inputs[i] = None
-                
-                # apply default values
-                for i, input in enumerate(inputs):
-                    if input is None and "default" in component["inputs"][i]:
-                        inputs[i] = component["inputs"][i]["default"]
+            # handle special input type "json":
+            for i, input_definition in enumerate(component['inputs']):
+                if input_definition["type"] == "json":
+                    try:
+                        inputs[i] = json.loads(inputs[i])
+                    except:
+                        inputs[i] = None
 
-                # create kwargs
-                kwargs = {
-                    input_definition["name"]: inputs[i] 
-                    for i, input_definition in enumerate(component["inputs"])
-                }
+            # apply default values
+            for i, input in enumerate(inputs):
+                if input is None and "default" in component["inputs"][i]:
+                    inputs[i] = component["inputs"][i]["default"]
 
-                results = main_function(**kwargs)
+            # create kwargs
+            kwargs = {
+                input_definition["name"]: inputs[i]
+                for i, input_definition in enumerate(component["inputs"])
+            }
 
-                if len(component['outputs']) == 1:
-                    self.marshal.SetOutput(results, DA, 0, True)
-                elif len(component['outputs']) > 1:
-                    for i, r in enumerate(results):
-                        self.marshal.SetOutput(r, DA, i, True)
+            results = main_function(**kwargs)
+
+            if len(component['outputs']) == 1:
+                self.marshal.SetOutput(results, DA, 0, True)
+            elif len(component['outputs']) > 1:
+                for i, r in enumerate(results):
+                    self.marshal.SetOutput(r, DA, i, True)
 
     if component.get("use-kwargs", False):
         return HoneyBadgerKwargsComponent
