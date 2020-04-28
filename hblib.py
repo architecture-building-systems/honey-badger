@@ -157,7 +157,7 @@ def get_base_class(component):
                 main_function = self.locate_main_function()
                 inputs = self.prepare_inputs(DA)
 
-                results = main_function(**self.inputs_as_dict(inputs))
+                results = main_function(self.inputs_as_dict(inputs))
 
                 self.marshal_results(DA, results)
 
