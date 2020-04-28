@@ -52,6 +52,7 @@ def main(badger_file, editable, install):
         with open(os.path.join(build_dir, hb_main_py), 'w') as hb_main:
             json_badger_config = json.dumps(badger_config, indent=4)
             assert not "'''" in json_badger_config, "Tripple single quotes not allowed in badger-file!"
+            json_badger_config = json_badger_config.replace("\\", "\\\\")  # make sure we escape backslashes
             hb_main.write(template.substitute(badger_config=json_badger_config, guid=guid))
 
         # copy hblib.py to build dir
