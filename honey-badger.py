@@ -160,7 +160,7 @@ def check_badger_config(badger_config, badger_dir):
     return badger_config
 
 
-# This is the code that get's used to create the classes required for GrassHopper Components / Assemblies
+# This is the code that gets used to create the classes required for GrassHopper Components / Assemblies
 TEMPLATE = u"""
 import json
 import GhPython

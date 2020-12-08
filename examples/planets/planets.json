@@ -45,7 +45,8 @@
       "subcategory": "planets",
       "id": "b0daeded-082f-46c3-a52f-4de06421a45b",
       "parameter-type": "ValueList",
-      "csv": "planets.csv"
+      "csv": "planets.csv",
+      "icon": "planets.png"
     }
   ]
 }

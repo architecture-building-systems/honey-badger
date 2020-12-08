@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -48,6 +49,32 @@ namespace HoneyBadgerRuntime
             this.AddListItem("second key", "second value");
             this.AddListItem("third key", "third value");
         }
+
+        /// <summary>
+        /// Return the icon string (base64) from the icon provided in honey-badger. NOTE: This is
+        /// supposed to be overridden by the honey-badger parameter compiler.
+        /// </summary>
+        /// <returns></returns>
+        public virtual string GetIconString()
+        {
+            return null;
+        }
+
+        protected override Bitmap Icon
+        {
+            get
+            {
+                var iconBase64 = GetIconString();
+                if (iconBase64 == null)
+                {
+                    return base.Icon;
+                }
+
+                return new Bitmap(
+                    new System.IO.MemoryStream(System.Convert.FromBase64String(iconBase64)));
+            }
+        }
+
 
         public void AddListItem(string key, string value)
         {

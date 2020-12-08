@@ -28,6 +28,7 @@ from System.Reflection.Emit import AssemblyBuilderAccess, OpCode, OpCodes
 from Grasshopper.Kernel import GH_AssemblyInfo
 
 from HoneyBadgerRuntime import HoneyBadgerValueList, HoneyBadgerRuntimeInfo
+import System.IO
 
 
 def compile_parameters(badger_config, badger_dir, dll_path):
@@ -62,6 +63,12 @@ def compile_parameters(badger_config, badger_dir, dll_path):
 
         override_load_value_list(type_builder, keys=keys, values=values)
 
+        if "icon" in parameter:
+            # convert icon (a path) to a base64 string
+            icon_path = os.path.join(badger_dir, parameter["icon"])
+            assert os.path.exists(icon_path), "Could not find icon file: {}".format(icon_path)
+            override_get_icon_string(type_builder, icon_path)            
+
         type_builder.CreateType()
 
     # add a GH_AssemblyInfo to the assembly...
@@ -83,6 +90,17 @@ def override_load_value_list(type_builder, keys, values):
         il_generator.Emit(OpCodes.Ldstr, json.dumps(value))
         il_generator.Emit.Overloads[OpCode, MethodInfo](OpCodes.Call, add_list_item)
 
+    il_generator.Emit(OpCodes.Ret)
+
+def override_get_icon_string(type_builder, icon_path):    
+    bytes = System.IO.File.ReadAllBytes(icon_path)
+    icon_base64 = System.Convert.ToBase64String(bytes)    
+    method_attributes = (MethodAttributes.Public | MethodAttributes.Virtual)
+    method_builder = type_builder.DefineMethod("GetIconString", method_attributes, CallingConventions.Standard,
+                                               clr.GetClrType(System.String), None)
+    il_generator = method_builder.GetILGenerator()
+    # il_generator.Emit(OpCodes.Ldarg_0)  # this
+    il_generator.Emit(OpCodes.Ldstr, icon_base64)
     il_generator.Emit(OpCodes.Ret)
 
 
