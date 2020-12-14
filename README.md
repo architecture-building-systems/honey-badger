@@ -1,6 +1,6 @@
 # honey-badger
 
-honey-badger is a build system for Python based Rhino/Grasshopper plugins
+honey-badger is a build system for Python based Rhino/Grasshopper plugins. The Reference Documentation is [here](https://github.com/architecture-building-systems/honey-badger).
 
 ## Why bother?
 
