@@ -49,7 +49,7 @@ def main(badger_file, editable, install, rhino_version, skip_compatibility_check
         # Checks that IronPython is being used
         assert platform.python_implementation() == 'IronPython', "You need to use IronPython to badger your components. Currently using {}".format(platform.python_implementation())
         assert ipy_version_actual in ipy_version_allowed, \
-            "IronPython version does not match for Rhino {rhino_version}. Must be {version} but was {wrong_version}".format(
+            "IronPython version does not match for Rhino {rhino_version}. Must be {version_target} but was {version_actual}".format(
                 rhino_version=rhino_version,
                 version_target=' or '.join(ipy_version_allowed),
                 version_actual=ipy_version_actual
