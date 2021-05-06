@@ -4,7 +4,7 @@ honey-badger - a build system for Rhino/Grasshopper components written in Python
 USAGE:
 ------
 
-honey-badger [-e] [-i] [-f BADGERFILE]
+honey-badger [-e] [-i] [-v RHINO_VERSION] [-s] [-f BADGERFILE]
 
     reads in the BADGERFILE (defaults to "honey-badger.json" in the current directory) and
     compiles it into a single *.ghpy file containing the classes necessary.
@@ -14,17 +14,21 @@ honey-badger [-e] [-i] [-f BADGERFILE]
     path to the scripts are hard-coded into the *.ghpy file.
 
     The -i switch installs the honey-badger kit after building to the user's Grasshopper Library folder.
+    
+    The -v parameter defines the Rhino version to find / add RhinoCommon and Grasshopper DLLs from.
+    
+    The -s switch skips a compatibility check to see that IronPython version matches the Rhino version desired (note: Rhino plugins are, for now, forward but not backward compatible!)
 """
 
 import sys
 import os
+import platform
 import clr
 import json
 import argparse
 import string
 import shutil
 import traceback
-import parameter_compiler
 
 clr.AddReference("System")
 clr.AddReference("System.IO")
@@ -32,7 +36,31 @@ import System
 import System.IO
 
 
-def main(badger_file, editable, install):
+def main(badger_file, editable, install, rhino_version, skip_compatibility_check):
+    
+    if not skip_compatibility_check:
+        rhino_to_ipy_version = {
+            '6': ['2.7.8'],
+            '7': ['2.7.8', '2.7.9']
+        }
+        
+        ipy_version_actual = '{}.{}.{}'.format(sys.version_info.major, sys.version_info.minor, sys.version_info.micro)
+        ipy_version_allowed = rhino_to_ipy_version[rhino_version]
+        # Checks that IronPython is being used
+        assert platform.python_implementation() == 'IronPython', "You need to use IronPython to badger your components. Currently using {}".format(platform.python_implementation())
+        assert ipy_version_actual in ipy_version_allowed, \
+            "IronPython version does not match for Rhino {rhino_version}. Must be {version} but was {wrong_version}".format(
+                rhino_version=rhino_version,
+                version_target=' or '.join(ipy_version_allowed),
+                version_actual=ipy_version_actual
+                )
+        
+        assert os.path.exists("C:\\Program Files\\Rhino {v}\\Plug-ins\\Grasshopper\\Grasshopper.dll".format(v=rhino_version)), "Could not find Grasshopper.dll. Is Rhino {v} installed?".format(v=rhino_version)
+        assert os.path.exists("C:\\Program Files\\Rhino {v}\System\\RhinoCommon.dll".format(v=rhino_version)), "Could not find RhinoCommon.dll. Is Rhino {v} installed?".format(v=rhino_version)
+    
+    os.environ['RHINO_VERSION'] = rhino_version
+    import parameter_compiler
+    
     try:
         # temporary create the helloworld dll adding the honey-badger.json to it
         with open(badger_file, mode='r') as bf:
@@ -198,6 +226,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="honey-badger - make for .ghpy")
     parser.add_argument('-e', '--editable', action="store_true", default=False)
     parser.add_argument('-i', '--install', action="store_true", default=False)
+    parser.add_argument('-v', '--rhino-version', choices=['6','7'], default='7', help='Specifies which Rhino version to badger to (only 6 or 7 supported)')
+    parser.add_argument('-s', '--skip-compatibility-check', action='store_true', default=False, help='Skips checking IronPython and Rhino compatibility.')
     parser.add_argument('file', action="store")
     args = parser.parse_args(sys.argv[1:])
-    main(badger_file=args.file, editable=args.editable, install=args.install)
+    main(badger_file=args.file, 
+         editable=args.editable, 
+         install=args.install, 
+         rhino_version=args.rhino_version,
+         skip_compatibility_check=args.skip_compatibility_check)

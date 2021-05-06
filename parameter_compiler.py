@@ -10,16 +10,17 @@ import csv
 import json
 import clr
 
+RHINO_VERSION = os.environ['RHINO_VERSION']
+
 clr.AddReference("IronPython")
 clr.AddReference("System")
 clr.AddReference("System.Reflection")
 
-
 hbrt_path = os.path.join(os.path.dirname(os.path.normpath(os.path.abspath(__file__))), "honey-badger-runtime", "bin",
                          "honey-badger-runtime.dll")
 clr.AddReferenceToFileAndPath(hbrt_path)
-clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\Plug-ins\Grasshopper\Grasshopper.dll")
-clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\System\RhinoCommon.dll")
+clr.AddReferenceToFileAndPath("C:\\Program Files\\Rhino {v}\\Plug-ins\\Grasshopper\\Grasshopper.dll".format(v=RHINO_VERSION))
+clr.AddReferenceToFileAndPath("C:\\Program Files\\Rhino {v}\System\\RhinoCommon.dll".format(v=RHINO_VERSION))
 
 from System import Array, Type, AppDomain
 from System.Reflection import (AssemblyName, TypeAttributes, MethodInfo, MethodAttributes, CallingConventions,
