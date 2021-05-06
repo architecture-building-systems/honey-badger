@@ -226,7 +226,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="honey-badger - make for .ghpy")
     parser.add_argument('-e', '--editable', action="store_true", default=False)
     parser.add_argument('-i', '--install', action="store_true", default=False)
-    parser.add_argument('-v', '--rhino-version', choices=['6','7'], default='7', help='Specifies which Rhino version to badger to (only 6 or 7 supported)')
+    parser.add_argument('-v', '--rhino-version', choices=['6','7'], default='6', help='Specifies which Rhino SDK version to badger to (only 6 or 7 supported)')
     parser.add_argument('-s', '--skip-compatibility-check', action='store_true', default=False, help='Skips checking IronPython and Rhino compatibility.')
     parser.add_argument('file', action="store")
     args = parser.parse_args(sys.argv[1:])
