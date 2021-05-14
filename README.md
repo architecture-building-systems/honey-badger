@@ -50,7 +50,7 @@ parameters, a GH component for each script in the CEA family could be created. h
   - Don't forget to install clr package to your Python 2.7 environment
 - You can package .csv databases into your component, with Daren's awesome [planets-example](/examples/planets/). But make sure it follows the same structure as his .csv example file, i.e. 1 header, comma separated, utf-8 encoding
   - Make sure you have `from __future__ import print_function` in your `.py` file, otherwise you'll get an error in Grasshopper: `The supplied data could not be converted: Parameter type: GH_Number. Supplied type: String`
-- Here is the results of checking compabitility of IronPython and Rhino. Best option is to use IronPython 2.6.8 with Rhino 6 SDK, as it will work for both RHino 6 and 7 no problemos. Rhino SDKs are forward but not backward compatible.
+- Here are the results of checking compabitility of IronPython and Rhino. Best option is to use IronPython 2.6.8 with Rhino 6 SDK, as it will work for both Rhino 6 and 7 no problemos. Rhino SDKs are forward but not backward compatible.
 
 |IronPython version | Rhino SDK version | Worked in Rhino 6 | Worked in Rhino 7|
 |-|-|-|-|

@@ -35,10 +35,13 @@ clr.AddReference("System.IO")
 import System
 import System.IO
 
+import parameter_compiler
 
 def main(badger_file, editable, install, rhino_version, skip_compatibility_check):
     
     if not skip_compatibility_check:
+        # Asserts rhino version is installed and compatible with IronPython used.
+        
         rhino_to_ipy_version = {
             '6': ['2.7.8'],
             '7': ['2.7.8', '2.7.9']
@@ -55,11 +58,19 @@ def main(badger_file, editable, install, rhino_version, skip_compatibility_check
                 version_actual=ipy_version_actual
                 )
         
-        assert os.path.exists("C:\\Program Files\\Rhino {v}\\Plug-ins\\Grasshopper\\Grasshopper.dll".format(v=rhino_version)), "Could not find Grasshopper.dll. Is Rhino {v} installed?".format(v=rhino_version)
-        assert os.path.exists("C:\\Program Files\\Rhino {v}\System\\RhinoCommon.dll".format(v=rhino_version)), "Could not find RhinoCommon.dll. Is Rhino {v} installed?".format(v=rhino_version)
+        assert os.path.exists(
+            os.path.join(os.path.expandvars("${PROGRAMFILES}"),
+                         "Rhino {v}".format(v=rhino_version),
+                         "Plug-ins", "Grasshopper", "Grasshopper.dll")), \
+            "Could not find Grasshopper.dll. Is Rhino {v} installed?".format(v=rhino_version)
+        
+        assert os.path.exists(
+            os.path.join(os.path.expandvars("${PROGRAMFILES}"),
+                         "Rhino {v}".format(v=rhino_version),
+                         "System", "RhinoCommon.dll")), \
+            "Could not find RhinoCommon.dll. Is Rhino {v} installed?".format(v=rhino_version)
     
-    os.environ['RHINO_VERSION'] = rhino_version
-    import parameter_compiler
+    parameter_compiler.setup(rhino_version)
     
     try:
         # temporary create the helloworld dll adding the honey-badger.json to it
