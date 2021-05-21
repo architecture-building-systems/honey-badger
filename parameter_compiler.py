@@ -14,21 +14,35 @@ clr.AddReference("IronPython")
 clr.AddReference("System")
 clr.AddReference("System.Reflection")
 
-
-hbrt_path = os.path.join(os.path.dirname(os.path.normpath(os.path.abspath(__file__))), "honey-badger-runtime", "bin",
-                         "honey-badger-runtime.dll")
-clr.AddReferenceToFileAndPath(hbrt_path)
-clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\Plug-ins\Grasshopper\Grasshopper.dll")
-clr.AddReferenceToFileAndPath(r"C:\Program Files\Rhino 6\System\RhinoCommon.dll")
-
 from System import Array, Type, AppDomain
 from System.Reflection import (AssemblyName, TypeAttributes, MethodInfo, MethodAttributes, CallingConventions,
                                PropertyAttributes)
 from System.Reflection.Emit import AssemblyBuilderAccess, OpCode, OpCodes
-from Grasshopper.Kernel import GH_AssemblyInfo
 
-from HoneyBadgerRuntime import HoneyBadgerValueList, HoneyBadgerRuntimeInfo
 import System.IO
+
+
+def setup(rhino_version):
+    """
+    Loads the RhinoCommon and Grasshopper libraries based on the desired/installed Rhino version.
+    Also loads the HoneyBadgerRuntime dll since it was somehow not working when imported above (maybe needs the Rhino dlls loaded first?)..
+    """
+    global GH_AssemblyInfo
+    clr.AddReferenceToFileAndPath(os.path.join(os.path.expandvars("${PROGRAMFILES}"),
+                         "Rhino {v}".format(v=rhino_version),
+                         "Plug-ins", "Grasshopper", "Grasshopper.dll"))
+    clr.AddReferenceToFileAndPath(os.path.join(os.path.expandvars("${PROGRAMFILES}"),
+                            "Rhino {v}".format(v=rhino_version),
+                            "System", "RhinoCommon.dll"))
+    from Grasshopper.Kernel import GH_AssemblyInfo
+    
+    global HoneyBadgerRuntimeInfo, HoneyBadgerValueList
+    
+    hbrt_path = os.path.join(os.path.dirname(os.path.normpath(os.path.abspath(__file__))), "honey-badger-runtime", "bin",
+                            "honey-badger-runtime.dll")
+    clr.AddReferenceToFileAndPath(hbrt_path)
+    from HoneyBadgerRuntime import HoneyBadgerValueList, HoneyBadgerRuntimeInfo
+
 
 
 def compile_parameters(badger_config, badger_dir, dll_path):
